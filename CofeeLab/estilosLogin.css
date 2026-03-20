@@ -1,0 +1,118 @@
+.barra-nav-login {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    border-bottom: 1.5px solid var(--borde);
+}
+
+.contenedor-auth {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 65px);
+    padding: 40px 20px;
+}
+
+.tarjeta-auth {
+    width: 100%;
+    max-width: 460px;
+    background: var(--blanco);
+    border-radius: 16px;
+    padding: 50px 44px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
+}
+
+.titulo-auth {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 32px;
+}
+
+.campo-auth {
+    margin-bottom: 22px;
+}
+
+.campo-auth label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.campo-auth input {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid var(--borde);
+    background: none;
+    padding: 10px 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    color: var(--gris-calido);
+}
+
+.campo-auth input:focus {
+    border-bottom-color: var(--verde-oscuro);
+}
+
+.envoltorio-pass {
+    position: relative;
+}
+
+.envoltorio-pass input {
+    padding-right: 30px;
+}
+
+.btn-ojo {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gris-calido);
+}
+
+.btn-auth {
+    width: 100%;
+    padding: 15px;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+}
+
+.btn-auth:hover {
+    opacity: 0.88;
+}
+
+.btn-acceder {
+    background: var(--verde-oscuro);
+    color: white;
+}
+
+.btn-cuenta-nueva {
+    background: none;
+    border: 2px solid var(--verde-oscuro);
+    color: var(--verde-oscuro);
+}
+
+.campos-dobles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.separador-auth {
+    text-align: center;
+    margin: 20px 0 8px;
+    font-size: 0.88rem;
+    color: var(--gris-calido);
+}

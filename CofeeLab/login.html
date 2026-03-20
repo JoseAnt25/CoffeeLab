@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoffeeLab — Acceder</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="estilosLogin.css">
+</head>
+
+<body>
+
+    <div class="notificacion" id="notificacion"></div>
+
+    <nav class="barra-nav-login">
+        <div style="width:36px"></div>
+        <div class="marca" onclick="window.location.href='index.html'">CoffeeLab</div>
+        <div style="width:36px"></div>
+    </nav>
+
+    <div class="contenedor-auth">
+        <div class="tarjeta-auth">
+            <h2 class="titulo-auth">Acceder</h2>
+            <div class="campo-auth">
+                <label>Usuario</label>
+                <input type="email" placeholder="prueba@none.com" id="email-acceder">
+            </div>
+            <div class="campo-auth">
+                <label>Contraseña</label>
+                <div class="envoltorio-pass">
+                    <input type="password" placeholder="************" id="pass-acceder">
+                    <button class="btn-ojo" onclick="alternarPass('pass-acceder')">👁</button>
+                </div>
+            </div>
+            <button class="btn-auth btn-acceder" onclick="manejarAcceder()">Acceder</button>
+            <div class="separador-auth">
+                <span>¿Aún no tienes cuenta?</span>
+            </div>
+            <button class="btn-auth btn-cuenta-nueva" onclick="window.location.href='registro.html'">Crear cuenta
+                nueva</button>
+        </div>
+    </div>
+
+    <script src="scriptLogin.js"></script>
+</body>
+
+</html>
