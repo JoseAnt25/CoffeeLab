@@ -1,0 +1,287 @@
+.inicio-hero {
+  padding: 56px 60px 28px;
+}
+
+.inicio-hero h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 24px;
+}
+
+.cuadricula-recomendados {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+
+.tarjeta-rec {
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  background: var(--blanco);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+}
+
+.tarjeta-rec:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.12);
+}
+
+.tarjeta-rec-imagen {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.tarjeta-rec-cuerpo {
+  padding: 16px 18px;
+}
+
+.tarjeta-rec-cuerpo h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+}
+
+/* ========== BANNERS DOS COLUMNAS ========== */
+.inicio-banners {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 420px;
+}
+
+.banner-imagen {
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.banner-imagen:hover img {
+  transform: scale(1.04);
+}
+
+.banner-texto {
+  background: var(--crema);
+  padding: 60px 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.banner-texto .etiqueta {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gris-calido);
+}
+
+.banner-texto h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--verde-oscuro);
+  line-height: 1.15;
+}
+
+.banner-texto p {
+  font-size: 0.97rem;
+  color: var(--texto-medio);
+  line-height: 1.7;
+  max-width: 420px;
+}
+
+.btn-banner {
+  display: inline-block;
+  width: fit-content;
+  padding: 14px 28px;
+  border: 2px solid var(--dorado);
+  border-radius: 4px;
+  background: none;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-oscuro);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-banner:hover {
+  background: var(--dorado);
+}
+
+/* ========== BANNER INVERTIDO (texto izquierda, imagen derecha) ========== */
+.inicio-banners--invertido .banner-texto {
+  background: var(--verde-oscuro);
+}
+
+.inicio-banners--invertido .banner-texto .etiqueta {
+  color: rgba(255,255,255,0.5);
+}
+
+.inicio-banners--invertido .banner-texto h2 {
+  color: var(--crema);
+}
+
+.inicio-banners--invertido .banner-texto p {
+  color: rgba(255,255,255,0.75);
+}
+
+.inicio-banners--invertido .btn-banner {
+  color: var(--crema);
+  border-color: var(--dorado);
+}
+
+.inicio-banners--invertido .btn-banner:hover {
+  background: var(--dorado);
+  color: var(--texto-oscuro);
+}
+
+/* ========== CTA FINAL ========== */
+.inicio-cta {
+  text-align: center;
+  padding: 160px 40px;
+  background-image: url('media/fondo.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.inicio-cta h2 {
+  color: var(--crema);
+  font-size: 2rem;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+}
+
+.botones-cta {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.btn-cta-dorado {
+  padding: 13px 32px;
+  background: var(--dorado);
+  border: none;
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn-cta-borde {
+  padding: 13px 32px;
+  background: var(--verde-oscuro);
+  border: 2px solid var(--verde-oscuro);
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--blanco);
+}
+
+/* ========== FOOTER ========== */
+footer {
+  background: var(--verde-oscuro);
+  color: rgba(255,255,255,0.7);
+  padding: 60px 60px 0;
+}
+
+footer .pie-contenido {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+footer .pie-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--crema);
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+footer .pie-marca p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  max-width: 240px;
+  text-align: center;
+}
+
+footer .pie-columna {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+footer .pie-columna h4 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--crema);
+  margin-bottom: 4px;
+}
+
+footer .pie-columna a {
+  font-size: 0.92rem;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+footer .pie-columna a:hover {
+  color: var(--dorado);
+}
+
+footer .pie-redes {
+  display: flex;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+footer .pie-redes a {
+  color: rgba(255,255,255,0.6);
+  transition: color 0.2s;
+}
+
+footer .pie-redes a:hover {
+  color: var(--dorado);
+}
+
+footer .pie-redes svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+footer .pie-copyright {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.35);
+}
