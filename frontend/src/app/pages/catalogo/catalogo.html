@@ -1,0 +1,41 @@
+<section class="catalogo">
+  <div class="container">
+    <h1>Catálogo</h1>
+
+    <!-- Filtros -->
+    <div class="filtros">
+      <button
+        [class.active]="categoriaSeleccionada() === null"
+        (click)="filtrarPor(null)">
+        Todos
+      </button>
+      @for (categoria of categorias(); track categoria.id) {
+        <button
+          [class.active]="categoriaSeleccionada() === categoria.id"
+          (click)="filtrarPor(categoria.id)">
+          {{ categoria.nombre }}
+        </button>
+      }
+    </div>
+
+    <!-- Productos -->
+    <div class="productos-grid">
+      @for (producto of productosFiltrados(); track producto.id) {
+        <div class="producto-card">
+          <div class="producto-imagen">☕</div>
+          <div class="producto-info">
+            <span class="categoria-tag">{{ producto.categoria?.nombre }}</span>
+            <h3>{{ producto.nombre }}</h3>
+            <p>{{ producto.descripcion }}</p>
+            <div class="producto-footer">
+              <span class="precio">desde {{ producto.precio }}€</span>
+              <a [routerLink]="['/catalogo', producto.id]" class="btn-primary">Ver más</a>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <p class="sin-resultados">No hay productos en esta categoría.</p>
+      }
+    </div>
+  </div>
+</section>

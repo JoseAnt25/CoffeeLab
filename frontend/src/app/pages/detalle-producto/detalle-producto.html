@@ -1,0 +1,62 @@
+<section class="detalle">
+  <div class="container">
+    <a routerLink="/catalogo" class="volver">← Volver al catálogo</a>
+
+    @if (producto(); as p) {
+    <div class="detalle-grid">
+
+      <!-- Imagen -->
+      <div class="detalle-imagen">
+        <div class="imagen-placeholder">☕</div>
+      </div>
+
+      <!-- Info -->
+      <div class="detalle-info">
+        <span class="categoria-tag">{{ p.categoria?.nombre }}</span>
+        <h1>{{ p.nombre }}</h1>
+        <p class="descripcion">{{ p.descripcion }}</p>
+
+        <!-- Variantes -->
+        @if (p.variantes && p.variantes.length > 0) {
+        <div class="variantes">
+          <h4>Tamaño</h4>
+          <div class="variantes-opciones">
+            @for (variante of p.variantes; track variante.id) {
+            <button [class.active]="varianteSeleccionada()?.id === variante.id" (click)="seleccionarVariante(variante)">
+              {{ variante.nombre }}
+            </button>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Precio -->
+        <div class="precio">
+          <span>{{ precioFinal() | number:'1.2-2' }}€</span>
+        </div>
+
+        <!-- Cantidad -->
+        <div class="cantidad">
+          <h4>Cantidad</h4>
+          <div class="cantidad-control">
+            <button (click)="decrementar()">−</button>
+            <span>{{ cantidad() }}</span>
+            <button (click)="incrementar()">+</button>
+          </div>
+        </div>
+
+        <!-- Añadir al carrito -->
+        <button class="btn-primary btn-carrito" (click)="agregarAlCarrito()">
+          @if (agregado()) {
+          ✓ Añadido al carrito
+          } @else {
+          🛒 Añadir al carrito
+          }
+        </button>
+      </div>
+    </div>
+    } @else {
+    <p>Cargando producto...</p>
+    }
+  </div>
+</section>

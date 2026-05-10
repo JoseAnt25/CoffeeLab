@@ -1,0 +1,58 @@
+<section class="mi-cuenta">
+  <div class="container">
+    <h1>Mi cuenta</h1>
+
+    <!-- Datos del usuario -->
+    <div class="usuario-card">
+      <div class="usuario-info">
+        <span class="usuario-avatar">👤</span>
+        <div>
+          <h2>{{ usuario()?.nombre }}</h2>
+          <p>{{ usuario()?.correo }}</p>
+          @if (usuario()?.direccion) {
+            <p>📍 {{ usuario()?.direccion }}</p>
+          }
+          <span class="rol-badge">{{ usuario()?.rol }}</span>
+        </div>
+      </div>
+      <button class="btn-secondary" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+
+    <!-- Pedidos -->
+    <div class="pedidos">
+      <h2>Mis pedidos</h2>
+
+      @if (pedidos().length === 0) {
+        <div class="sin-pedidos">
+          <p>Todavía no has realizado ningún pedido.</p>
+          <a routerLink="/catalogo" class="btn-primary">Explorar catálogo</a>
+        </div>
+      } @else {
+        @for (pedido of pedidos(); track pedido.id) {
+          <div class="pedido-card">
+            <div class="pedido-header">
+              <span class="pedido-id">Pedido #{{ pedido.id }}</span>
+              <span [class]="estadoClase(pedido.estado)">{{ pedido.estado }}</span>
+              <span class="pedido-fecha">{{ pedido.created_at | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="pedido-items">
+              @for (item of pedido.items; track item.id) {
+                <div class="pedido-item">
+                  <span>{{ item.producto?.nombre }}
+                    @if (item.variante) { ({{ item.variante.nombre }}) }
+                    x{{ item.cantidad }}
+                  </span>
+                  <span>{{ (item.precio_unitario * item.cantidad) | number:'1.2-2' }}€</span>
+                </div>
+              }
+            </div>
+            <div class="pedido-total">
+              <span>Total</span>
+              <span>{{ pedido.total | number:'1.2-2' }}€</span>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</section>

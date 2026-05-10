@@ -1,0 +1,27 @@
+<nav class="navbar">
+  <a routerLink="/" class="navbar-brand">
+    CoffeLab
+  </a>
+
+  <ul class="navbar-links">
+    <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a></li>
+    <li><a routerLink="/catalogo" routerLinkActive="active">Catálogo</a></li>
+  </ul>
+
+  <div class="navbar-actions">
+    <a routerLink="/carrito" class="carrito-icon">
+      🛒
+      @if (carrito.totalItems() > 0) {
+        <span class="badge">{{ carrito.totalItems() }}</span>
+      }
+    </a>
+
+    @if (auth.estaAutenticado()) {
+      <a routerLink="/mi-cuenta" routerLinkActive="active">Mi cuenta</a>
+      <button (click)="auth.logout()">Cerrar sesión</button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="active">Iniciar sesión</a>
+      <a routerLink="/register" routerLinkActive="active">Registrarse</a>
+    }
+  </div>
+</nav>

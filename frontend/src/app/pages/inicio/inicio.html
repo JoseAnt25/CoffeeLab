@@ -1,0 +1,86 @@
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Café de especialidad<br>con alma de origen</h1>
+    <p>Seleccionamos los mejores granos directamente de los productores. Cada taza cuenta una historia.</p>
+    <a routerLink="/catalogo" class="btn-primary">Explorar catálogo</a>
+  </div>
+</section>
+
+<!-- Nuestra historia -->
+<section class="historia">
+  <div class="container">
+    <h2>Nuestro origen</h2>
+    <div class="historia-grid">
+      <div class="historia-texto">
+        <p>
+          En CoffeLab creemos que el café excepcional empieza mucho antes de llegar a tu taza.
+          Trabajamos directamente con pequeños productores de Etiopía, Colombia, Guatemala y Brasil,
+          garantizando una cadena de trazabilidad completa desde la finca hasta tu puerta.
+        </p>
+        <p>
+          Cada lote que seleccionamos pasa por un riguroso proceso de cata y análisis sensorial.
+          Nos aseguramos de que el agricultor reciba una compensación justa y de que tú recibas
+          un café con personalidad, con notas complejas y un perfil único.
+        </p>
+        <p>
+          Nuestro tostadero está ubicado en el corazón de Madrid, donde tostamos en pequeños
+          lotes para garantizar la máxima frescura en cada pedido.
+        </p>
+      </div>
+      <div class="historia-imagen">
+        <div class="imagen-placeholder">🌱</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Valores -->
+<section class="valores">
+  <div class="container">
+    <h2>Por qué CoffeLab</h2>
+    <div class="valores-grid">
+      <div class="valor-card">
+        <span>🌍</span>
+        <h3>Trazabilidad total</h3>
+        <p>Conocemos el nombre del agricultor, la finca y el proceso de cada café que vendemos.</p>
+      </div>
+      <div class="valor-card">
+        <span>🔥</span>
+        <h3>Tostado fresco</h3>
+        <p>Tostamos bajo pedido en pequeños lotes para que el café llegue en su mejor momento.</p>
+      </div>
+      <div class="valor-card">
+        <span>♻️</span>
+        <h3>Comercio justo</h3>
+        <p>Pagamos precios por encima del mercado para garantizar una cadena sostenible.</p>
+      </div>
+      <div class="valor-card">
+        <span>🎓</span>
+        <h3>Formación</h3>
+        <p>Incluimos guías de preparación y notas de cata con cada pedido.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Productos destacados -->
+<section class="destacados">
+  <div class="container">
+    <h2>Productos destacados</h2>
+    <div class="productos-grid">
+      @for (producto of productosDestacados(); track producto.id) {
+        <div class="producto-card">
+          <div class="producto-imagen">☕</div>
+          <h3>{{ producto.nombre }}</h3>
+          <p>{{ producto.descripcion }}</p>
+          <span class="precio">desde {{ producto.precio }}€</span>
+          <a [routerLink]="['/catalogo', producto.id]" class="btn-secondary">Ver producto</a>
+        </div>
+      }
+    </div>
+    <div class="ver-todos">
+      <a routerLink="/catalogo" class="btn-primary">Ver todos los productos</a>
+    </div>
+  </div>
+</section>

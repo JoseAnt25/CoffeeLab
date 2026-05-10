@@ -1,0 +1,69 @@
+<section class="register">
+  <div class="register-card">
+    <h1>Crear cuenta</h1>
+    <p>Únete a CoffeLab y descubre el mejor café ☕</p>
+
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input
+        id="nombre"
+        type="text"
+        [ngModel]="nombre()"
+        (ngModelChange)="nombre.set($event)"
+        placeholder="Tu nombre"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="correo">Correo electrónico</label>
+      <input
+        id="correo"
+        type="email"
+        [ngModel]="correo()"
+        (ngModelChange)="correo.set($event)"
+        placeholder="tu@correo.com"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="contrasena">Contraseña</label>
+      <input
+        id="contrasena"
+        type="password"
+        [ngModel]="contrasena()"
+        (ngModelChange)="contrasena.set($event)"
+        placeholder="••••••••"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="contrasena-confirmacion">Confirmar contraseña</label>
+      <input
+        id="contrasena-confirmacion"
+        type="password"
+        [ngModel]="contrasenaConfirmacion()"
+        (ngModelChange)="contrasenaConfirmacion.set($event)"
+        placeholder="••••••••"
+      />
+    </div>
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <button
+      class="btn-primary"
+      (click)="registrarse()"
+      [disabled]="cargando()">
+      @if (cargando()) {
+        Creando cuenta...
+      } @else {
+        Crear cuenta
+      }
+    </button>
+
+    <p class="login-link">
+      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+    </p>
+  </div>
+</section>

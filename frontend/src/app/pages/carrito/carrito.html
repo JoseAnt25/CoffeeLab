@@ -1,0 +1,73 @@
+<section class="carrito">
+  <div class="container">
+    <h1>Tu carrito</h1>
+
+    @if (carritoService.items().length === 0) {
+      <div class="carrito-vacio">
+        <span>🛒</span>
+        <p>Tu carrito está vacío.</p>
+        <a routerLink="/catalogo" class="btn-primary">Ver catálogo</a>
+      </div>
+    } @else {
+      <div class="carrito-grid">
+
+        <!-- Items -->
+        <div class="carrito-items">
+          @for (item of carritoService.items(); track item.producto.id) {
+            <div class="carrito-item">
+              <div class="item-imagen">☕</div>
+              <div class="item-info">
+                <h3>{{ item.producto.nombre }}</h3>
+                @if (item.variante) {
+                  <span class="item-variante">{{ item.variante.nombre }}</span>
+                }
+                <span class="item-precio">{{ item.precioUnitario | number:'1.2-2' }}€</span>
+              </div>
+              <div class="item-cantidad">
+                <input
+                  type="number"
+                  [value]="item.cantidad"
+                  min="1"
+                  (change)="actualizarCantidad(item.producto.id, item.variante?.id ?? null, $event)"
+                />
+              </div>
+              <div class="item-subtotal">
+                {{ (item.precioUnitario * item.cantidad) | number:'1.2-2' }}€
+              </div>
+              <button class="btn-eliminar" (click)="eliminar(item.producto.id, item.variante?.id ?? null)">
+                ✕
+              </button>
+            </div>
+          }
+        </div>
+
+        <!-- Resumen -->
+        <div class="carrito-resumen">
+          <h3>Resumen</h3>
+          <div class="resumen-row">
+            <span>Subtotal</span>
+            <span>{{ carritoService.total() | number:'1.2-2' }}€</span>
+          </div>
+          <div class="resumen-row">
+            <span>Envío</span>
+            <span>Gratis</span>
+          </div>
+          <div class="resumen-total">
+            <span>Total</span>
+            <span>{{ carritoService.total() | number:'1.2-2' }}€</span>
+          </div>
+
+          @if (authService.estaAutenticado()) {
+            <a routerLink="/checkout" class="btn-primary">Finalizar pedido</a>
+          } @else {
+            <a routerLink="/login" [queryParams]="{ returnUrl: '/checkout' }" class="btn-primary">
+              Iniciar sesión para comprar
+            </a>
+          }
+
+          <button class="btn-secondary" (click)="carritoService.vaciar()">Vaciar carrito</button>
+        </div>
+      </div>
+    }
+  </div>
+</section>
