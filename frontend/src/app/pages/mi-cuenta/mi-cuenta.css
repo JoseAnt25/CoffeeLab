@@ -1,0 +1,218 @@
+.mi-cuenta {
+  padding: 4rem 0;
+}
+
+.mi-cuenta h1 {
+  margin-bottom: 2.5rem;
+}
+
+/* ===== USUARIO ===== */
+.usuario-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  border: 1px solid var(--color-beige);
+  border-radius: var(--radio);
+  margin-bottom: 3rem;
+}
+
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.usuario-avatar {
+  font-size: 3rem;
+  background: var(--color-crema);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.usuario-info h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.usuario-info p {
+  font-size: 0.9rem;
+  color: var(--color-gris);
+  margin-bottom: 0.2rem;
+}
+
+.rol-badge {
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
+  background: var(--color-crema);
+  border-radius: 50px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-cafe);
+  font-weight: 500;
+  margin-top: 0.4rem;
+}
+
+/* ===== PEDIDOS ===== */
+.pedidos h2 {
+  margin-bottom: 1.5rem;
+}
+
+.sin-pedidos {
+  text-align: center;
+  padding: 4rem;
+  border: 1px solid var(--color-beige);
+  border-radius: var(--radio);
+}
+
+.sin-pedidos p {
+  margin-bottom: 1.5rem;
+}
+
+.pedido-card {
+  border: 1px solid var(--color-beige);
+  border-radius: var(--radio);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.pedido-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: var(--color-crema);
+  border-bottom: 1px solid var(--color-beige);
+}
+
+.pedido-id {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.pedido-fecha {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: var(--color-gris);
+}
+
+.estado-pendiente  { color: #e67e22; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+.estado-pagado     { color: #2980b9; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+.estado-enviado    { color: #8e44ad; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+.estado-entregado  { color: #27ae60; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+.estado-cancelado  { color: #c0392b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+
+.pedido-items {
+  padding: 1rem 1.5rem;
+}
+
+.pedido-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--color-gris);
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--color-gris-claro);
+}
+
+.pedido-item:last-child {
+  border-bottom: none;
+}
+
+.pedido-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--color-beige);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.direccion-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.sin-direccion {
+  color: var(--color-gris);
+  font-style: italic;
+}
+
+.btn-editar {
+  background: none;
+  border: 1px solid var(--color-beige);
+  border-radius: var(--radio);
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: var(--transicion);
+  font-family: var(--fuente-cuerpo);
+}
+
+.btn-editar:hover {
+  background: var(--color-gris-claro);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 200;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-blanco);
+  border-radius: var(--radio);
+  width: 100%;
+  max-width: 440px;
+  z-index: 201;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--color-beige);
+}
+
+.modal-header h3 {
+  font-size: 1.1rem;
+}
+
+.btn-cerrar {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--color-gris);
+  transition: var(--transicion);
+}
+
+.btn-cerrar:hover {
+  color: var(--color-negro);
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--color-beige);
+}

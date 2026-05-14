@@ -1,0 +1,165 @@
+.detalle {
+    padding: 4rem 0;
+}
+
+.volver {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--color-gris);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2.5rem;
+    transition: var(--transicion);
+}
+
+.volver:hover {
+    color: var(--color-negro);
+}
+
+/* ===== GRID ===== */
+.detalle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+}
+
+/* ===== IMAGEN ===== */
+.detalle-imagen .imagen-placeholder {
+    font-size: 8rem;
+    aspect-ratio: 1;
+    border-radius: var(--radio);
+}
+
+/* ===== INFO ===== */
+.detalle-info h1 {
+    margin: 0.5rem 0 1rem;
+    font-size: 2rem;
+}
+
+.descripcion {
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+/* ===== VARIANTES ===== */
+.variantes {
+    margin-bottom: 2rem;
+}
+
+.variantes h4 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+    color: var(--color-negro);
+}
+
+.variantes-opciones {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.variantes-opciones button {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--color-beige);
+    border-radius: 50px;
+    background: var(--color-blanco);
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transicion);
+}
+
+.variantes-opciones button:hover,
+.variantes-opciones button.active {
+    background: var(--color-negro);
+    color: var(--color-blanco);
+    border-color: var(--color-negro);
+}
+
+/* ===== PRECIO ===== */
+.precio {
+    margin-bottom: 2rem;
+}
+
+.precio span {
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: var(--fuente-titulo);
+    color: var(--color-negro);
+}
+
+/* ===== CANTIDAD ===== */
+.cantidad {
+    margin-bottom: 2rem;
+}
+
+.cantidad h4 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+    color: var(--color-negro);
+}
+
+.cantidad-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid var(--color-beige);
+    border-radius: var(--radio);
+    width: fit-content;
+    padding: 0.3rem;
+}
+
+.cantidad-control button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: var(--radio);
+    transition: var(--transicion);
+    font-family: var(--fuente-cuerpo);
+}
+
+.cantidad-control button:hover {
+    background: var(--color-gris-claro);
+}
+
+.cantidad-control span {
+    font-size: 1rem;
+    font-weight: 500;
+    min-width: 24px;
+    text-align: center;
+}
+
+/* ===== BOTÓN CARRITO ===== */
+.btn-carrito {
+    width: 100%;
+    padding: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.detalle-imagen img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radio);
+}
+
+.upload-imagen {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.upload-imagen .btn-secondary {
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+}

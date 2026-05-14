@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Producto extends Model
 {
@@ -14,10 +15,13 @@ class Producto extends Model
         'categoria_id',
         'nombre',
         'descripcion',
+        'imagen',
         'precio',
         'stock',
         'activo',
     ];
+
+    protected $appends = ['imagen_url'];
 
     protected function casts(): array
     {
@@ -25,6 +29,12 @@ class Producto extends Model
             'precio' => 'decimal:2',
             'activo' => 'boolean',
         ];
+    }
+
+    public function getImagenUrlAttribute(): string|null
+    {
+        if (!$this->imagen) return null;
+        return config('app.url') . '/storage/' . $this->imagen;
     }
 
     public function categoria(): BelongsTo

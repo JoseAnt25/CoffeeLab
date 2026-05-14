@@ -1,0 +1,165 @@
+/* ===== HERO ===== */
+.hero {
+  background: var(--color-crema);
+  padding: 8rem 2rem;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  color: var(--color-negro);
+}
+
+.hero-content p {
+  font-size: 1.1rem;
+  color: var(--color-gris);
+  margin-bottom: 2.5rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== HISTORIA ===== */
+.historia {
+  padding: 6rem 0;
+}
+
+.historia h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.historia-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.historia-texto p {
+  margin-bottom: 1.2rem;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.historia-imagen .imagen-placeholder {
+  font-size: 8rem;
+  aspect-ratio: 4/3;
+}
+
+/* ===== VALORES ===== */
+.valores {
+  background: var(--color-crema);
+  padding: 6rem 0;
+}
+
+.valores h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.valores-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.valor-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  background: var(--color-blanco);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+
+  span {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+}
+
+/* ===== DESTACADOS ===== */
+.destacados {
+  padding: 6rem 0;
+}
+
+.destacados h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.producto-card {
+  border: 1px solid var(--color-beige);
+  border-radius: var(--radio);
+  overflow: hidden;
+  transition: var(--transicion);
+
+  &:hover {
+    box-shadow: var(--sombra);
+    transform: translateY(-2px);
+  }
+
+  .producto-imagen {
+    background: var(--color-crema);
+    padding: 2rem;
+    text-align: center;
+    font-size: 4rem;
+  }
+
+  h3 {
+    padding: 1rem 1.2rem 0.5rem;
+    font-size: 1rem;
+  }
+
+  p {
+    padding: 0 1.2rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .precio {
+    display: block;
+    padding: 0.8rem 1.2rem 0;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-negro);
+  }
+
+  .btn-secondary {
+    margin: 1rem 1.2rem 1.2rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+  }
+}
+
+.ver-todos {
+  text-align: center;
+}

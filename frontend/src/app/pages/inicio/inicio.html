@@ -70,13 +70,19 @@
     <h2>Productos destacados</h2>
     <div class="productos-grid">
       @for (producto of productosDestacados(); track producto.id) {
-        <div class="producto-card">
-          <div class="producto-imagen">☕</div>
-          <h3>{{ producto.nombre }}</h3>
-          <p>{{ producto.descripcion }}</p>
-          <span class="precio">desde {{ producto.precio }}€</span>
-          <a [routerLink]="['/catalogo', producto.id]" class="btn-secondary">Ver producto</a>
+      <div class="producto-card">
+        <div class="producto-imagen">
+          @if (producto.imagen_url) {
+          <img [src]="producto.imagen_url" [alt]="producto.nombre" />
+          } @else {
+          <span>☕</span>
+          }
         </div>
+        <h3>{{ producto.nombre }}</h3>
+        <p>{{ producto.descripcion }}</p>
+        <span class="precio">desde {{ producto.precio }}€</span>
+        <a [routerLink]="['/catalogo', producto.id]" class="btn-secondary">Ver producto</a>
+      </div>
       }
     </div>
     <div class="ver-todos">

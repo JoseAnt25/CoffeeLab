@@ -9,14 +9,51 @@
         <div>
           <h2>{{ usuario()?.nombre }}</h2>
           <p>{{ usuario()?.correo }}</p>
-          @if (usuario()?.direccion) {
-            <p>📍 {{ usuario()?.direccion }}</p>
-          }
+          <div class="direccion-row">
+            @if (usuario()?.direccion) {
+              <p>📍 {{ usuario()?.direccion }}</p>
+            } @else {
+              <p class="sin-direccion">Sin dirección guardada</p>
+            }
+            <button class="btn-editar" (click)="abrirEditarDireccion()">✏️ Editar</button>
+          </div>
           <span class="rol-badge">{{ usuario()?.rol }}</span>
         </div>
       </div>
       <button class="btn-secondary" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
+
+    <!-- Modal editar dirección -->
+    @if (editandoDireccion()) {
+      <div class="modal-overlay" (click)="cerrarEditarDireccion()"></div>
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Editar dirección</h3>
+          <button class="btn-cerrar" (click)="cerrarEditarDireccion()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="direccion">Dirección</label>
+            <input
+              id="direccion"
+              type="text"
+              [ngModel]="nuevaDireccion()"
+              (ngModelChange)="nuevaDireccion.set($event)"
+              placeholder="Calle, número, ciudad..."
+            />
+          </div>
+          @if (error()) {
+            <p class="error">{{ error() }}</p>
+          }
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" (click)="cerrarEditarDireccion()">Cancelar</button>
+          <button class="btn-primary" (click)="guardarDireccion()" [disabled]="guardando()">
+            {{ guardando() ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+      </div>
+    }
 
     <!-- Pedidos -->
     <div class="pedidos">

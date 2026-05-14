@@ -14,7 +14,6 @@ class CategoriaSeeder extends Seeder
             'Café en grano',
             'Cafeteras',
             'Accesorios',
-            'Monodosis',
         ];
 
         foreach ($categorias as $nombre) {

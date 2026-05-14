@@ -1,0 +1,85 @@
+nav.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2rem;
+  background: var(--color-blanco);
+  border-bottom: 1px solid var(--color-beige);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-brand {
+  font-family: var(--fuente-titulo);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-negro);
+  letter-spacing: 0.02em;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.navbar-links a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-gris);
+  transition: var(--transicion);
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+  color: var(--color-negro);
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-actions a,
+.navbar-actions button {
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-gris);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--fuente-cuerpo);
+  transition: var(--transicion);
+}
+
+.navbar-actions a:hover,
+.navbar-actions button:hover {
+  color: var(--color-negro);
+}
+
+.carrito-icon {
+  position: relative;
+  font-size: 1.2rem;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--color-cafe);
+  color: var(--color-blanco);
+  font-size: 0.65rem;
+  font-weight: 600;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

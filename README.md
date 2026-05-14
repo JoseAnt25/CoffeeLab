@@ -1,14 +1,6 @@
-# CoffeeLab
+# CoffeLab 
 
-### Proyecto realizado por Jose Antonio Marín Rodríguez de 2ºDAW
-
-API REST desarrollada en **Laravel** para una tienda online de café en grano, cafeteras y accesorios. Gestiona productos con variantes, pedidos con seguimiento de estado y usuarios con roles.
-
----
-
-## Requisitos previos
-
-- [Docker](https://www.docker.com/products/docker-desktop) y Docker Compose
+Tienda online de café de especialidad desarrollada con **Laravel** (backend API REST) y **Angular** (frontend). Gestiona productos con variantes e imágenes, pedidos con seguimiento de estado, usuarios con roles y un panel de administración completo.
 
 ---
 
@@ -16,28 +8,45 @@ API REST desarrollada en **Laravel** para una tienda online de café en grano, c
 
 ```
 CoffeeLab/
-└── backend/
-    ├── docker/
-    │   └── php/
-    │       └── Dockerfile
-    ├── src/                  # Proyecto Laravel
-    ├── docker-compose.yml
-    └── README.md
+├── backend/
+│   ├── docker/
+│   │   └── php/
+│   │       └── Dockerfile
+│   ├── src/                  # Proyecto Laravel
+│   ├── docker-compose.yml
+│   └── README.md
+└── frontend/                 # Proyecto Angular
+    ├── src/
+    │   ├── app/
+    │   │   ├── guards/
+    │   │   ├── interceptors/
+    │   │   ├── pages/
+    │   │   ├── services/
+    │   │   └── shared/
+    │   └── styles.css
+    └── angular.json
 ```
 
 ---
 
-## Instalación desde cero
+## Requisitos previos
+
+- [Docker](https://www.docker.com/products/docker-desktop) y Docker Compose
+- [Node.js](https://nodejs.org/) v18 o superior
+
+---
+
+## Backend (Laravel)
 
 ### 1. Configurar el `.env`
 
 Copia el archivo de ejemplo y configúralo:
 
 ```bash
-src/.env.example src/.env
+cp src/.env.example src/.env
 ```
 
-Asegúrate de que el `.env` tenga estos valores para conectar con la base de datos del contenedor:
+Asegúrate de que el `.env` tenga estos valores:
 
 ```env
 APP_NAME=CoffeLab
@@ -74,31 +83,93 @@ Esto levanta dos servicios:
 - `CoffeLab-app` — PHP 8.4 con Laravel en el puerto `8000`
 - `CoffeLab-db` — MySQL 8.0 en el puerto `3307`
 
-### 3. Entrar al contenedor
+### 3. Instalar dependencias
 
 ```bash
-docker exec -it CoffeLab-app bash
+docker exec -it CoffeLab-app composer install
 ```
 
-### 4. Instalar dependencias
+### 4. Generar la app key
 
 ```bash
-composer install
+docker exec -it CoffeLab-app php artisan key:generate
 ```
 
-### 5. Generar la app key
+### 5. Ejecutar migraciones y seeders
 
 ```bash
-php artisan key:generate
+docker exec -it CoffeLab-app php artisan migrate
+docker exec -it CoffeLab-app php artisan db:seed
 ```
 
-### 6. Ejecutar las migraciones
+### 6. Crear enlace de storage
 
 ```bash
-php artisan migrate
+docker exec -it CoffeLab-app php artisan storage:link
 ```
 
-La aplicación estará disponible en **http://localhost:8000**
+El backend estará disponible en **http://localhost:8000**
+
+---
+
+## Frontend (Angular)
+
+### 1. Instalar dependencias
+
+```bash
+cd frontend
+npm install
+```
+
+### 2. Arrancar el servidor de desarrollo
+
+```bash
+npm start
+```
+
+El frontend estará disponible en **http://localhost:4200**
+
+---
+
+## Usuarios de prueba
+
+| Correo | Contraseña | Rol |
+|---|---|---|
+| admin@coffelab.com | password123 | admin |
+| cliente@coffelab.com | password123 | cliente |
+
+---
+
+## API REST
+
+### Rutas públicas
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| POST | `/api/register` | Registro de usuario |
+| POST | `/api/login` | Login |
+| GET | `/api/productos` | Listar productos |
+| GET | `/api/productos/{id}` | Detalle de producto |
+| GET | `/api/categorias` | Listar categorías |
+| GET | `/api/categorias/{id}` | Detalle de categoría |
+
+### Rutas protegidas (requieren token)
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| POST | `/api/logout` | Cerrar sesión |
+| GET | `/api/me` | Datos del usuario autenticado |
+| POST | `/api/productos` | Crear producto |
+| PUT | `/api/productos/{id}` | Editar producto |
+| DELETE | `/api/productos/{id}` | Eliminar producto |
+| POST | `/api/categorias` | Crear categoría |
+| PUT | `/api/categorias/{id}` | Editar categoría |
+| DELETE | `/api/categorias/{id}` | Eliminar categoría |
+| GET | `/api/pedidos` | Listar pedidos |
+| POST | `/api/pedidos` | Crear pedido |
+| GET | `/api/pedidos/{id}` | Detalle de pedido |
+| PUT | `/api/pedidos/{id}` | Cambiar estado de pedido |
+| DELETE | `/api/pedidos/{id}` | Eliminar pedido |
 
 ---
 
@@ -110,21 +181,11 @@ La aplicación estará disponible en **http://localhost:8000**
 |---|---|
 | `usuarios` | Clientes y administradores de la tienda |
 | `categorias` | Agrupación de productos (café, cafeteras, accesorios) |
-| `productos` | Catálogo de productos con precio y stock |
+| `productos` | Catálogo de productos con precio, stock e imagen |
 | `variantes_producto` | Variantes por producto (tamaño, color, etc.) con modificador de precio |
 | `pedidos` | Pedidos realizados por los usuarios con seguimiento de estado |
 | `items_pedido` | Líneas de cada pedido con precio unitario en el momento de la compra |
-
-### Relaciones
-
-```
-usuarios      ──< pedidos
-pedidos       ──< items_pedido
-productos     ──< items_pedido
-variantes     ──< items_pedido
-categorias    ──< productos
-productos     ──< variantes_producto
-```
+| `personal_access_tokens` | Tokens de autenticación Sanctum |
 
 ### Estados de un pedido
 
@@ -133,7 +194,37 @@ productos     ──< variantes_producto
 ### Roles de usuario
 
 - `cliente` — rol por defecto
-- `admin` — acceso a gestión del catálogo y pedidos
+- `admin` — acceso al panel de administración
+
+---
+
+## Frontend — Páginas
+
+| Ruta | Descripción | Protegida |
+|---|---|---|
+| `/` | Inicio con historia y productos destacados | No |
+| `/catalogo` | Catálogo con filtros por categoría | No |
+| `/catalogo/:id` | Detalle de producto con variantes y carrito | No |
+| `/carrito` | Página del carrito | No |
+| `/checkout` | Finalizar pedido | Sí (auth) |
+| `/login` | Inicio de sesión | No |
+| `/register` | Registro de usuario | No |
+| `/mi-cuenta` | Historial de pedidos del usuario | Sí (auth) |
+| `/admin` | Panel de administración | Sí (admin) |
+| `/admin/productos` | Gestión de productos | Sí (admin) |
+| `/admin/pedidos` | Gestión de pedidos | Sí (admin) |
+
+---
+
+## Frontend — Servicios
+
+| Servicio | Descripción |
+|---|---|
+| `AuthService` | Login, register, logout, signals de usuario |
+| `ProductoService` | CRUD de productos y subida de imágenes |
+| `CategoriaService` | CRUD de categorías |
+| `PedidoService` | Crear y gestionar pedidos |
+| `CarritoService` | Carrito en memoria con signals |
 
 ---
 
@@ -149,26 +240,24 @@ docker compose down
 # Entrar al contenedor de la app
 docker exec -it CoffeLab-app bash
 
-# Ver logs de la app
-docker compose logs -f app
+# Resetear BD y seeders
+docker exec -it CoffeLab-app php artisan db:wipe && php artisan migrate && php artisan db:seed
 
-# Resetear y volver a migrar
-php artisan db:wipe && php artisan migrate
+# Limpiar caché
+docker exec -it CoffeLab-app php artisan config:clear
+docker exec -it CoffeLab-app php artisan cache:clear
 
-# Limpiar caché de configuración
-php artisan config:clear
-php artisan cache:clear
+# Borrar BD y volúmenes completamente
+docker compose down -v
 ```
 
 ---
 
-## Modelos
+## Docker Compose
 
-| Modelo | Tabla |
-|---|---|
-| `User` | `usuarios` |
-| `Categoria` | `categorias` |
-| `Producto` | `productos` |
-| `VarianteProducto` | `variantes_producto` |
-| `Pedido` | `pedidos` |
-| `ItemPedido` | `items_pedido` |
+| Servicio | Imagen | Puerto |
+|---|---|---|
+| app | php:8.4-cli-alpine + Composer 2 | 8000 |
+| db | mysql:8.0 | 3307 → 3306 |
+
+Las imágenes de productos se almacenan en `backend/src/storage/app/public/productos` y se sirven desde `http://localhost:8000/storage/productos/`.

@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { ProductoService, Producto, Variante } from '../../services/producto';
 import { CarritoService } from '../../services/carrito';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -14,11 +15,13 @@ export class DetalleProducto implements OnInit {
   private route = inject(ActivatedRoute);
   private productoService = inject(ProductoService);
   private carritoService = inject(CarritoService);
+  auth = inject(AuthService);
 
   producto = signal<Producto | null>(null);
   varianteSeleccionada = signal<Variante | null>(null);
   cantidad = signal<number>(1);
   agregado = signal<boolean>(false);
+  subiendoImagen = signal<boolean>(false);
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -55,5 +58,22 @@ export class DetalleProducto implements OnInit {
     this.carritoService.agregar(producto, this.varianteSeleccionada(), this.cantidad());
     this.agregado.set(true);
     setTimeout(() => this.agregado.set(false), 2000);
+  }
+
+  onImagenSeleccionada(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    const producto = this.producto();
+    if (!file || !producto) return;
+
+    this.subiendoImagen.set(true);
+    this.productoService.subirImagen(producto.id, file).subscribe({
+      next: (p) => {
+        this.producto.set(p);
+        this.subiendoImagen.set(false);
+      },
+      error: () => {
+        this.subiendoImagen.set(false);
+      }
+    });
   }
 }

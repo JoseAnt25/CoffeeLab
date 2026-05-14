@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Producto;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
@@ -20,22 +21,29 @@ class ProductoController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'categoria_id'  => 'required|exists:categorias,id',
-            'nombre'        => 'required|string|max:255',
-            'descripcion'   => 'nullable|string',
-            'precio'        => 'required|numeric|min:0',
-            'stock'         => 'required|integer|min:0',
-            'activo'        => 'boolean',
-            'variantes'             => 'nullable|array',
-            'variantes.*.nombre'            => 'required|string|max:255',
+            'categoria_id'                   => 'required|exists:categorias,id',
+            'nombre'                         => 'required|string|max:255',
+            'descripcion'                    => 'nullable|string',
+            'imagen'                         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'precio'                         => 'required|numeric|min:0',
+            'stock'                          => 'required|integer|min:0',
+            'activo'                         => 'boolean',
+            'variantes'                      => 'nullable|array',
+            'variantes.*.nombre'             => 'required|string|max:255',
             'variantes.*.modificador_precio' => 'required|numeric',
-            'variantes.*.stock'             => 'required|integer|min:0',
+            'variantes.*.stock'              => 'required|integer|min:0',
         ]);
+
+        $imagenPath = null;
+        if ($request->hasFile('imagen')) {
+            $imagenPath = $request->file('imagen')->store('productos', 'public');
+        }
 
         $producto = Producto::create([
             'categoria_id' => $validated['categoria_id'],
             'nombre'       => $validated['nombre'],
             'descripcion'  => $validated['descripcion'] ?? null,
+            'imagen'       => $imagenPath,
             'precio'       => $validated['precio'],
             'stock'        => $validated['stock'],
             'activo'       => $validated['activo'] ?? true,
@@ -61,13 +69,21 @@ class ProductoController extends Controller
         $producto = Producto::findOrFail($id);
 
         $validated = $request->validate([
-            'categoria_id'  => 'sometimes|exists:categorias,id',
-            'nombre'        => 'sometimes|string|max:255',
-            'descripcion'   => 'nullable|string',
-            'precio'        => 'sometimes|numeric|min:0',
-            'stock'         => 'sometimes|integer|min:0',
-            'activo'        => 'sometimes|boolean',
+            'categoria_id' => 'sometimes|exists:categorias,id',
+            'nombre'       => 'sometimes|string|max:255',
+            'descripcion'  => 'nullable|string',
+            'imagen'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'precio'       => 'sometimes|numeric|min:0',
+            'stock'        => 'sometimes|integer|min:0',
+            'activo'       => 'sometimes|boolean',
         ]);
+
+        if ($request->hasFile('imagen')) {
+            if ($producto->imagen) {
+                Storage::disk('public')->delete($producto->imagen);
+            }
+            $validated['imagen'] = $request->file('imagen')->store('productos', 'public');
+        }
 
         $producto->update($validated);
 
@@ -79,12 +95,14 @@ class ProductoController extends Controller
         $producto = Producto::findOrFail($id);
 
         if ($producto->itemsPedido()->count() > 0) {
-            // Si tiene pedidos, desactivar en lugar de borrar
             $producto->update(['activo' => false]);
-
             return response()->json([
                 'mensaje' => 'El producto tiene pedidos asociados y ha sido desactivado.',
             ]);
+        }
+
+        if ($producto->imagen) {
+            Storage::disk('public')->delete($producto->imagen);
         }
 
         $producto->variantes()->delete();

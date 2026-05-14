@@ -61,4 +61,13 @@ export class AuthService {
   esAdmin(): boolean {
     return this.usuario()?.rol === 'admin';
   }
+
+  actualizar(datos: { nombre?: string; direccion?: string }) {
+  return this.http.put<Usuario>(`${this.apiUrl}/me`, datos).pipe(
+    tap(usuario => {
+      localStorage.setItem('usuario', JSON.stringify(usuario));
+      this.usuario.set(usuario);
+      })
+    );
+  }
 }

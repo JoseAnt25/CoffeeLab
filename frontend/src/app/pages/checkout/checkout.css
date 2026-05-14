@@ -1,0 +1,119 @@
+.checkout {
+  padding: 4rem 0;
+}
+
+.checkout h1 {
+  margin-bottom: 2.5rem;
+}
+
+/* ===== PEDIDO CONFIRMADO ===== */
+.pedido-confirmado {
+  text-align: center;
+  padding: 6rem 0;
+}
+
+.pedido-confirmado span {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.pedido-confirmado h2 {
+  margin-bottom: 1rem;
+}
+
+.pedido-confirmado p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== GRID ===== */
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* ===== DIRECCIÓN ===== */
+.checkout-direccion {
+  border: 1px solid var(--color-beige);
+  border-radius: var(--radio);
+  padding: 2rem;
+}
+
+.checkout-direccion h3 {
+  margin-bottom: 1.5rem;
+}
+
+.direccion-actual {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--color-crema);
+  padding: 1.2rem;
+  border-radius: var(--radio);
+}
+
+.direccion-actual span {
+  font-size: 1.2rem;
+}
+
+.direccion-actual p {
+  font-size: 0.95rem;
+  color: var(--color-negro);
+}
+
+.aviso {
+  font-size: 0.9rem;
+  color: var(--color-gris);
+  margin-bottom: 1.5rem;
+}
+
+/* ===== RESUMEN ===== */
+.checkout-resumen {
+  border: 1px solid var(--color-beige);
+  border-radius: var(--radio);
+  padding: 2rem;
+  position: sticky;
+  top: 100px;
+}
+
+.checkout-resumen h3 {
+  margin-bottom: 1.5rem;
+}
+
+.resumen-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--color-gris);
+  margin-bottom: 0.8rem;
+}
+
+.resumen-total {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--color-beige);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.checkout-resumen .btn-primary,
+.checkout-resumen .btn-secondary {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.checkout-resumen .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

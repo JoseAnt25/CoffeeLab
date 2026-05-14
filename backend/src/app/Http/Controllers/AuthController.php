@@ -69,4 +69,19 @@ class AuthController extends Controller
     {
         return response()->json($request->user()->load('pedidos'));
     }
+
+    public function update(Request $request): JsonResponse
+    {
+    $usuario = $request->user();
+
+    $validated = $request->validate([
+        'nombre'    => 'sometimes|string|max:255',
+        'direccion' => 'sometimes|string|max:255',
+    ]);
+
+    $usuario->update($validated);
+
+    // Actualizar localStorage con los nuevos datos
+    return response()->json($usuario);
+    }
 }

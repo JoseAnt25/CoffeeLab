@@ -1,0 +1,78 @@
+.admin-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.admin-sidebar {
+  background: var(--color-negro);
+  color: var(--color-blanco);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.admin-brand {
+  margin-bottom: 3rem;
+}
+
+.admin-brand a {
+  font-family: var(--fuente-titulo);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-blanco);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.admin-brand span {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.4);
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.admin-nav a {
+  padding: 0.8rem 1rem;
+  border-radius: var(--radio);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  transition: var(--transicion);
+}
+
+.admin-nav a:hover,
+.admin-nav a.active {
+  background: rgba(255,255,255,0.1);
+  color: var(--color-blanco);
+}
+
+.admin-volver {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  transition: var(--transicion);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-volver:hover {
+  color: var(--color-blanco);
+}
+
+/* ===== MAIN ===== */
+.admin-main {
+  background: var(--color-gris-claro);
+  padding: 2.5rem;
+  overflow-y: auto;
+}

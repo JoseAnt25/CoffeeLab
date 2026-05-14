@@ -1,0 +1,117 @@
+<div class="admin-section">
+  <div class="admin-header">
+    <h1>Productos</h1>
+    <button class="btn-primary" (click)="abrirCrear()">+ Nuevo producto</button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="admin-table-wrapper">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (producto of productos(); track producto.id) {
+          <tr>
+            <td>
+              <div class="tabla-imagen">
+                @if (producto.imagen_url) {
+                  <img [src]="producto.imagen_url" [alt]="producto.nombre" />
+                } @else {
+                  <span>☕</span>
+                }
+              </div>
+            </td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.categoria?.nombre }}</td>
+            <td>{{ producto.precio | number:'1.2-2' }}€</td>
+            <td>{{ producto.stock }}</td>
+            <td>
+              <span [class]="producto.activo ? 'estado-activo' : 'estado-inactivo'">
+                {{ producto.activo ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="acciones">
+              <label class="btn-tabla" title="Subir imagen">
+                📷
+                <input type="file" accept="image/*" (change)="subirImagen(producto, $event)" style="display:none" />
+              </label>
+              <button class="btn-tabla" (click)="abrirEditar(producto)">✏️</button>
+              <button class="btn-tabla btn-danger" (click)="eliminar(producto)">🗑️</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal formulario -->
+@if (mostrarFormulario()) {
+  <div class="modal-overlay" (click)="cerrarFormulario()"></div>
+  <div class="modal">
+    <div class="modal-header">
+      <h2>{{ productoEditando() ? 'Editar producto' : 'Nuevo producto' }}</h2>
+      <button class="btn-cerrar" (click)="cerrarFormulario()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Categoría</label>
+        <select [(ngModel)]="form.categoria_id">
+          <option [value]="null">Selecciona una categoría</option>
+          @for (cat of categorias(); track cat.id) {
+            <option [value]="cat.id">{{ cat.nombre }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="form.nombre" placeholder="Nombre del producto" />
+      </div>
+
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea [(ngModel)]="form.descripcion" placeholder="Descripción del producto" rows="3"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Precio (€)</label>
+          <input type="number" [(ngModel)]="form.precio" placeholder="0.00" min="0" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label>Stock</label>
+          <input type="number" [(ngModel)]="form.stock" placeholder="0" min="0" />
+        </div>
+      </div>
+
+      <div class="form-group form-check">
+        <label>
+          <input type="checkbox" [(ngModel)]="form.activo" />
+          Producto activo
+        </label>
+      </div>
+
+      @if (error()) {
+        <p class="error">{{ error() }}</p>
+      }
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="cerrarFormulario()">Cancelar</button>
+      <button class="btn-primary" (click)="guardar()" [disabled]="cargando()">
+        {{ cargando() ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </div>
+}

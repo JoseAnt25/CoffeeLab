@@ -1,6 +1,6 @@
 <nav class="navbar">
   <a routerLink="/" class="navbar-brand">
-    CoffeLab
+    ☕ CoffeLab
   </a>
 
   <ul class="navbar-links">
@@ -9,14 +9,17 @@
   </ul>
 
   <div class="navbar-actions">
-    <a routerLink="/carrito" class="carrito-icon">
+    <button class="carrito-icon" (click)="abrirPanel()">
       🛒
       @if (carrito.totalItems() > 0) {
         <span class="badge">{{ carrito.totalItems() }}</span>
       }
-    </a>
+    </button>
 
     @if (auth.estaAutenticado()) {
+      @if (auth.esAdmin()) {
+        <a routerLink="/admin" routerLinkActive="active">Panel admin</a>
+      }
       <a routerLink="/mi-cuenta" routerLinkActive="active">Mi cuenta</a>
       <button (click)="auth.logout()">Cerrar sesión</button>
     } @else {
@@ -25,3 +28,8 @@
     }
   </div>
 </nav>
+
+<app-carrito-panel
+  [abierto]="panelAbierto()"
+  (cerrar)="cerrarPanel()"
+/>

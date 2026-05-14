@@ -14,6 +14,8 @@ export interface Producto {
   categoria_id: number;
   nombre: string;
   descripcion: string;
+  imagen: string | null;
+  imagen_url: string | null;
   precio: number;
   stock: number;
   activo: boolean;
@@ -47,5 +49,12 @@ export class ProductoService {
 
   eliminar(id: number) {
     return this.http.delete(`${this.apiUrl}/productos/${id}`);
+  }
+
+  subirImagen(id: number, file: File) {
+  const formData = new FormData();
+  formData.append('imagen', file);
+  formData.append('_method', 'PUT');
+  return this.http.post<Producto>(`${this.apiUrl}/productos/${id}`, formData);
   }
 }

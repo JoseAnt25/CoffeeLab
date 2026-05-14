@@ -7,7 +7,24 @@
 
       <!-- Imagen -->
       <div class="detalle-imagen">
+        @if (producto()?.imagen_url) {
+        <img [src]="producto()?.imagen_url" [alt]="producto()?.nombre" />
+        } @else {
         <div class="imagen-placeholder">☕</div>
+        }
+        @if (auth.esAdmin()) {
+        <div class="upload-imagen">
+          <label for="imagen" class="btn-secondary">
+            @if (subiendoImagen()) {
+            Subiendo...
+            } @else {
+            📷 Cambiar imagen
+            }
+          </label>
+          <input id="imagen" type="file" accept="image/*" (change)="onImagenSeleccionada($event)"
+            style="display:none" />
+        </div>
+        }
       </div>
 
       <!-- Info -->

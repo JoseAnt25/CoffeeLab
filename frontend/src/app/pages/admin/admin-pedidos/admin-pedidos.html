@@ -1,0 +1,94 @@
+<div class="admin-section">
+  <div class="admin-header">
+    <h1>Pedidos</h1>
+    <span class="total-pedidos">{{ pedidos().length }} pedidos</span>
+  </div>
+
+  <!-- Tabla -->
+  <div class="admin-table-wrapper">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Cliente</th>
+          <th>Fecha</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (pedido of pedidos(); track pedido.id) {
+          <tr>
+            <td>#{{ pedido.id }}</td>
+            <td>{{ pedido.usuario_id }}</td>
+            <td>{{ pedido.created_at | date:'dd/MM/yyyy' }}</td>
+            <td>{{ pedido.total | number:'1.2-2' }}€</td>
+            <td>
+              <select
+                [value]="pedido.estado"
+                (change)="cambiarEstado(pedido, $event)"
+                [class]="estadoClase(pedido.estado)">
+                @for (estado of estados; track estado) {
+                  <option [value]="estado" [selected]="pedido.estado === estado">
+                    {{ estado }}
+                  </option>
+                }
+              </select>
+            </td>
+            <td>
+              <button class="btn-tabla" (click)="verDetalle(pedido)">🔍 Ver</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal detalle -->
+@if (pedidoDetalle(); as pedido) {
+  <div class="modal-overlay" (click)="cerrarDetalle()"></div>
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Pedido #{{ pedido.id }}</h2>
+      <button class="btn-cerrar" (click)="cerrarDetalle()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="detalle-info">
+        <div class="detalle-row">
+          <span>Estado</span>
+          <span [class]="estadoClase(pedido.estado)">{{ pedido.estado }}</span>
+        </div>
+        <div class="detalle-row">
+          <span>Fecha</span>
+          <span>{{ pedido.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="detalle-row">
+          <span>Dirección</span>
+          <span>{{ pedido.direccion_envio }}</span>
+        </div>
+      </div>
+
+      <h4>Productos</h4>
+      <div class="detalle-items">
+        @for (item of pedido.items; track item.id) {
+          <div class="detalle-item">
+            <span>
+              {{ item.producto?.nombre }}
+              @if (item.variante) { ({{ item.variante.nombre }}) }
+              x{{ item.cantidad }}
+            </span>
+            <span>{{ (item.precio_unitario * item.cantidad) | number:'1.2-2' }}€</span>
+          </div>
+        }
+      </div>
+
+      <div class="detalle-total">
+        <span>Total</span>
+        <span>{{ pedido.total | number:'1.2-2' }}€</span>
+      </div>
+    </div>
+  </div>
+}
