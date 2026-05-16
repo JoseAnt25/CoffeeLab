@@ -12,9 +12,18 @@ export interface ItemPedido {
   variante?: { id: number; nombre: string; modificador_precio: number };
 }
 
+export interface PaginatedResponse<T> {
+  data: T[];
+  current_page: number;
+  last_page: number;
+  total: number;
+  per_page: number;
+}
+
 export interface Pedido {
   id: number;
   usuario_id: number;
+  usuario?: { id: number; nombre: string; correo: string };
   total: number;
   estado: 'pendiente' | 'pagado' | 'enviado' | 'entregado' | 'cancelado';
   direccion_envio: string;
@@ -38,9 +47,13 @@ export interface CrearPedidoDto {
 export class PedidoService {
   private apiUrl = 'http://localhost:8000/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getAll() {
+  getAll(page: number = 1) {
+    return this.http.get<PaginatedResponse<Pedido>>(`${this.apiUrl}/pedidos?page=${page}`);
+  }
+
+  getAllSinPaginar() {
     return this.http.get<Pedido[]>(`${this.apiUrl}/pedidos`);
   }
 

@@ -3,75 +3,77 @@
     <h1>Finalizar pedido</h1>
 
     @if (pedidoCreado()) {
-      <div class="pedido-confirmado">
-        <span>✅</span>
-        <h2>¡Pedido confirmado!</h2>
-        <p>Tu pedido ha sido registrado correctamente. Te avisaremos cuando sea enviado.</p>
-        <a routerLink="/mi-cuenta" class="btn-primary">Ver mis pedidos</a>
-      </div>
+    <div class="pedido-confirmado">
+      <span>✅</span>
+      <h2>¡Pedido confirmado!</h2>
+      <p>Tu pedido ha sido registrado correctamente. Te avisaremos cuando sea enviado.</p>
+      <a routerLink="/mi-cuenta" class="btn-primary">Ver mis pedidos</a>
+    </div>
     } @else {
-      <div class="checkout-grid">
+    <div class="checkout-grid">
 
-        <!-- Dirección -->
-        <div class="checkout-direccion">
-          <h3>Dirección de envío</h3>
+      <!-- Dirección -->
+      <div class="checkout-direccion">
+        <h3>Dirección de envío</h3>
 
-          @if (tieneDireccion()) {
-            <div class="direccion-actual">
-              <span>📍</span>
-              <p>{{ usuario()?.direccion }}</p>
-            </div>
-          } @else {
-            <p class="aviso">No tienes una dirección guardada. Introduce una para continuar.</p>
-            <div class="form-group">
-              <label for="direccion">Dirección</label>
-              <input
-                id="direccion"
-                type="text"
-                [(ngModel)]="nuevaDireccion"
-                placeholder="Calle, número, ciudad..."
-              />
-            </div>
-          }
+        @if (tieneDireccion()) {
+        <div class="direccion-actual">
+          <span>📍</span>
+          <p>{{ usuario()?.direccion }}</p>
         </div>
-
-        <!-- Resumen -->
-        <div class="checkout-resumen">
-          <h3>Resumen del pedido</h3>
-
-          @for (item of carritoItems(); track item.producto.id) {
-            <div class="resumen-item">
-              <span>{{ item.producto.nombre }}
-                @if (item.variante) { ({{ item.variante.nombre }}) }
-                x{{ item.cantidad }}
-              </span>
-              <span>{{ (item.precioUnitario * item.cantidad) | number:'1.2-2' }}€</span>
-            </div>
-          }
-
-          <div class="resumen-total">
-            <span>Total</span>
-            <span>{{ total() | number:'1.2-2' }}€</span>
-          </div>
-
-          @if (error()) {
-            <p class="error">{{ error() }}</p>
-          }
-
-          <button
-            class="btn-primary"
-            (click)="confirmarPedido()"
-            [disabled]="cargando()">
-            @if (cargando()) {
-              Procesando...
-            } @else {
-              Confirmar pedido
+        } @else {
+        <p class="aviso">No tienes una dirección guardada. Introduce una para continuar.</p>
+        <form [formGroup]="form">
+          <div class="form-group">
+            <label for="direccion">Dirección</label>
+            <input id="direccion" type="text" formControlName="direccion"
+              placeholder="Ej: Calle Mayor 12, 3ºB, Madrid, Madrid, España"
+              [class.input-error]="direccion?.invalid && direccion?.touched" />
+            @if (direccion?.touched && direccion?.hasError('required')) {
+            <span class="field-error">La dirección es obligatoria.</span>
             }
-          </button>
-
-          <a routerLink="/carrito" class="btn-secondary">Volver al carrito</a>
-        </div>
+            @if (direccion?.touched && direccion?.hasError('formatoInvalido')) {
+            <span class="field-error">Formato: Calle Nombre Nº, Piso/Edificio, Ciudad, Provincia, País</span>
+            }
+          </div>
+        </form>
+        }
       </div>
+
+      <!-- Resumen -->
+      <div class="checkout-resumen">
+        <h3>Resumen del pedido</h3>
+
+        @for (item of carritoItems(); track item.producto.id) {
+        <div class="resumen-item">
+          <span>{{ item.producto.nombre }}
+            @if (item.variante) { ({{ item.variante.nombre }}) }
+            x{{ item.cantidad }}
+          </span>
+          <span>{{ (item.precioUnitario * item.cantidad) | number:'1.2-2' }}€</span>
+        </div>
+        }
+
+        <div class="resumen-total">
+          <span>Total</span>
+          <span>{{ total() | number:'1.2-2' }}€</span>
+        </div>
+
+        @if (error()) {
+        <p class="error">{{ error() }}</p>
+        }
+
+        <button class="btn-primary" (click)="confirmarPedido()" [disabled]="cargando()">
+          @if (cargando()) {
+          Procesando...
+          } @else {
+          Confirmar pedido
+          }
+        </button>
+
+        <a routerLink="/carrito" class="btn-secondary">Volver al carrito</a>
+      </div>
+    </div>
     }
   </div>
 </section>

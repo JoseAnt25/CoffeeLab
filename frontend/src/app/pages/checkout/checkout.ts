@@ -1,14 +1,24 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 import { CarritoService } from '../../services/carrito';
 import { AuthService } from '../../services/auth';
 import { PedidoService } from '../../services/pedido';
 
+function direccionValidator(control: AbstractControl): ValidationErrors | null {
+  const valor = control.value?.trim();
+  if (!valor) return { formatoInvalido: true };
+  
+  const partes = valor.split(',').map((p: string) => p.trim());
+  return partes.length >= 4 && partes.every((p: string) => p.length > 0)
+    ? null
+    : { formatoInvalido: true };
+}
+
 @Component({
   selector: 'app-checkout',
-  imports: [RouterLink, FormsModule, DecimalPipe],
+  imports: [RouterLink, ReactiveFormsModule, DecimalPipe],
   templateUrl: './checkout.html',
   styleUrl: './checkout.css',
 })
@@ -17,15 +27,21 @@ export class Checkout implements OnInit {
   private authService = inject(AuthService);
   private pedidoService = inject(PedidoService);
   private router = inject(Router);
+  private fb = inject(FormBuilder);
 
   usuario = this.authService.usuario;
   carritoItems = this.carritoService.items;
   total = this.carritoService.total;
 
-  nuevaDireccion = signal<string>('');
   cargando = signal<boolean>(false);
   error = signal<string | null>(null);
   pedidoCreado = signal<boolean>(false);
+
+  form = this.fb.group({
+    direccion: ['', [Validators.required, direccionValidator]],
+  });
+
+  get direccion() { return this.form.get('direccion'); }
 
   ngOnInit() {
     if (this.carritoItems().length === 0) {
@@ -41,13 +57,14 @@ export class Checkout implements OnInit {
     const usuario = this.usuario();
     if (!usuario) return;
 
-    const direccion = this.tieneDireccion()
-      ? usuario.direccion!
-      : this.nuevaDireccion();
+    let direccionEnvio = usuario.direccion;
 
-    if (!direccion) {
-      this.error.set('Por favor introduce una dirección de envío.');
-      return;
+    if (!this.tieneDireccion()) {
+      if (this.form.invalid) {
+        this.form.markAllAsTouched();
+        return;
+      }
+      direccionEnvio = this.form.value.direccion!;
     }
 
     this.cargando.set(true);
@@ -55,7 +72,7 @@ export class Checkout implements OnInit {
 
     const pedido = {
       usuario_id: usuario.id,
-      direccion_envio: direccion,
+      direccion_envio: direccionEnvio!,
       items: this.carritoItems().map(item => ({
         producto_id: item.producto.id,
         variante_id: item.variante?.id ?? null,

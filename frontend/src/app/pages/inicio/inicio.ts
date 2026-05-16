@@ -14,7 +14,7 @@ export class Inicio implements OnInit {
   productosDestacados = signal<Producto[]>([]);
 
   ngOnInit() {
-    this.productoService.getAll().subscribe(productos => {
+    this.productoService.getAllSinPaginar().subscribe(productos => {
       this.productosDestacados.set(productos.slice(0, 3));
     });
   }

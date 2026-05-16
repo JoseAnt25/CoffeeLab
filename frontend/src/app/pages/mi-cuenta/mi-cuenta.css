@@ -101,11 +101,45 @@
   color: var(--color-gris);
 }
 
-.estado-pendiente  { color: #e67e22; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
-.estado-pagado     { color: #2980b9; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
-.estado-enviado    { color: #8e44ad; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
-.estado-entregado  { color: #27ae60; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
-.estado-cancelado  { color: #c0392b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+.estado-pendiente {
+  color: #e67e22;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.estado-pagado {
+  color: #2980b9;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.estado-enviado {
+  color: #8e44ad;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.estado-entregado {
+  color: #27ae60;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.estado-cancelado {
+  color: #c0392b;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
 
 .pedido-items {
   padding: 1rem 1.5rem;
@@ -163,7 +197,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 200;
 }
 
@@ -177,7 +211,7 @@
   width: 100%;
   max-width: 440px;
   z-index: 201;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 .modal-header {
@@ -215,4 +249,26 @@
   gap: 1rem;
   padding: 1.5rem 2rem;
   border-top: 1px solid var(--color-beige);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .mi-cuenta {
+    padding: 2rem 0;
+  }
+
+  .usuario-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .usuario-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .direccion-row {
+    flex-wrap: wrap;
+  }
 }

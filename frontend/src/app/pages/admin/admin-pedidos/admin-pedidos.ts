@@ -14,7 +14,9 @@ export class AdminPedidos implements OnInit {
 
   pedidos = signal<Pedido[]>([]);
   pedidoDetalle = signal<Pedido | null>(null);
-
+  pagina = signal<number>(1);
+  ultimaPagina = signal<number>(1);
+  total = signal<number>(0);
   estados = ['pendiente', 'pagado', 'enviado', 'entregado', 'cancelado'];
 
   ngOnInit() {
@@ -22,7 +24,16 @@ export class AdminPedidos implements OnInit {
   }
 
   cargarPedidos() {
-    this.pedidoService.getAll().subscribe(p => this.pedidos.set(p));
+    this.pedidoService.getAll(this.pagina()).subscribe(res => {
+      this.pedidos.set(res.data);
+      this.ultimaPagina.set(res.last_page);
+      this.total.set(res.total);
+    });
+  }
+
+  irPagina(pagina: number) {
+    this.pagina.set(pagina);
+    this.cargarPedidos();
   }
 
   verDetalle(pedido: Pedido) {
@@ -50,11 +61,11 @@ export class AdminPedidos implements OnInit {
 
   estadoClase(estado: string): string {
     const clases: Record<string, string> = {
-      pendiente:  'estado-pendiente',
-      pagado:     'estado-pagado',
-      enviado:    'estado-enviado',
-      entregado:  'estado-entregado',
-      cancelado:  'estado-cancelado',
+      pendiente: 'estado-pendiente',
+      pagado: 'estado-pagado',
+      enviado: 'estado-enviado',
+      entregado: 'estado-entregado',
+      cancelado: 'estado-cancelado',
     };
     return clases[estado] ?? '';
   }

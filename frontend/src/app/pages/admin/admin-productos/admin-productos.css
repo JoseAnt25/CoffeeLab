@@ -206,3 +206,67 @@
   width: 16px;
   height: 16px;
 }
+
+/* ===== PAGINACIÓN ===== */
+.paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-beige);
+}
+
+.paginacion-info {
+  font-size: 0.85rem;
+  color: var(--color-gris);
+}
+
+.paginacion-controles {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.btn-pagina {
+  background: none;
+  border: 1px solid var(--color-beige);
+  border-radius: var(--radio);
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: var(--transicion);
+}
+
+.btn-pagina:hover:not(:disabled) {
+  background: var(--color-negro);
+  color: var(--color-blanco);
+  border-color: var(--color-negro);
+}
+
+.btn-pagina:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .admin-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .modal {
+    width: 95%;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

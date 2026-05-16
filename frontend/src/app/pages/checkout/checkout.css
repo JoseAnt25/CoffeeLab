@@ -117,3 +117,18 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .checkout {
+    padding: 2rem 0;
+  }
+
+  .checkout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-resumen {
+    position: static;
+  }
+}

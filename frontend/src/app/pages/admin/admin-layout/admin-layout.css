@@ -76,3 +76,26 @@
   padding: 2.5rem;
   overflow-y: auto;
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    position: static;
+    height: auto;
+    padding: 1.5rem 1rem;
+  }
+
+  .admin-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .admin-main {
+    padding: 1.5rem 1rem;
+  }
+}

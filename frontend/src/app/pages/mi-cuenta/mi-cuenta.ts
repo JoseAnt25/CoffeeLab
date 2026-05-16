@@ -1,30 +1,45 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DecimalPipe, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { PedidoService, Pedido } from '../../services/pedido';
 
+function direccionValidator(control: AbstractControl): ValidationErrors | null {
+  const valor = control.value?.trim();
+  if (!valor) return { formatoInvalido: true };
+  
+  const partes = valor.split(',').map((p: string) => p.trim());
+  return partes.length >= 4 && partes.every((p: string) => p.length > 0)
+    ? null
+    : { formatoInvalido: true };
+}
+
 @Component({
   selector: 'app-mi-cuenta',
-  imports: [RouterLink, DecimalPipe, DatePipe, FormsModule],
+  imports: [RouterLink, DecimalPipe, DatePipe, ReactiveFormsModule],
   templateUrl: './mi-cuenta.html',
   styleUrl: './mi-cuenta.css',
 })
 export class MiCuenta implements OnInit {
   private authService = inject(AuthService);
   private pedidoService = inject(PedidoService);
+  private fb = inject(FormBuilder);
 
   usuario = this.authService.usuario;
   pedidos = signal<Pedido[]>([]);
 
   editandoDireccion = signal<boolean>(false);
-  nuevaDireccion = signal<string>('');
   guardando = signal<boolean>(false);
-  error = signal<string | null>(null);
+
+  form = this.fb.group({
+    direccion: ['', [Validators.required, direccionValidator]],
+  });
+
+  get direccion() { return this.form.get('direccion'); }
 
   ngOnInit() {
-    this.pedidoService.getAll().subscribe(p => this.pedidos.set(p));
+    this.pedidoService.getAllSinPaginar().subscribe(p => this.pedidos.set(p));
   }
 
   cerrarSesion() {
@@ -32,31 +47,29 @@ export class MiCuenta implements OnInit {
   }
 
   abrirEditarDireccion() {
-    this.nuevaDireccion.set(this.usuario()?.direccion ?? '');
+    this.form.patchValue({ direccion: this.usuario()?.direccion ?? '' });
     this.editandoDireccion.set(true);
   }
 
   cerrarEditarDireccion() {
     this.editandoDireccion.set(false);
-    this.error.set(null);
+    this.form.reset();
   }
 
   guardarDireccion() {
-    if (!this.nuevaDireccion()) {
-      this.error.set('La dirección no puede estar vacía.');
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
 
     this.guardando.set(true);
-    this.error.set(null);
 
-    this.authService.actualizar({ direccion: this.nuevaDireccion() }).subscribe({
+    this.authService.actualizar({ direccion: this.form.value.direccion! }).subscribe({
       next: () => {
         this.cerrarEditarDireccion();
         this.guardando.set(false);
       },
       error: () => {
-        this.error.set('Error al guardar la dirección.');
         this.guardando.set(false);
       },
     });

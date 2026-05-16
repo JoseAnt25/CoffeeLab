@@ -21,7 +21,7 @@
   margin-bottom: 0.5rem;
 }
 
-.login-card > p {
+.login-card>p {
   color: var(--color-gris);
   font-size: 0.95rem;
   margin-bottom: 2rem;
@@ -48,4 +48,26 @@
   color: var(--color-negro);
   font-weight: 500;
   text-decoration: underline;
+}
+
+.input-error {
+  border-color: var(--color-error) !important;
+}
+
+.field-error {
+  color: var(--color-error);
+  font-size: 0.78rem;
+  margin-top: 0.2rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .login {
+    padding: 2rem 1rem;
+    align-items: flex-start;
+  }
+
+  .login-card {
+    padding: 2rem 1.5rem;
+  }
 }

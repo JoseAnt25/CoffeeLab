@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $productos = Producto::with(['categoria', 'variantes'])
             ->where('activo', true)
-            ->get();
+            ->paginate(10);
 
         return response()->json($productos);
     }

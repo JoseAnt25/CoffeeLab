@@ -27,6 +27,9 @@ export class AdminProductos implements OnInit {
   categorias = signal<Categoria[]>([]);
   mostrarFormulario = signal<boolean>(false);
   productoEditando = signal<Producto | null>(null);
+  pagina = signal<number>(1);
+  ultimaPagina = signal<number>(1);
+  total = signal<number>(0);
   cargando = signal<boolean>(false);
   error = signal<string | null>(null);
 
@@ -38,7 +41,16 @@ export class AdminProductos implements OnInit {
   }
 
   cargarProductos() {
-    this.productoService.getAll().subscribe(p => this.productos.set(p));
+    this.productoService.getAll(this.pagina()).subscribe(res => {
+      this.productos.set(res.data);
+      this.ultimaPagina.set(res.last_page);
+      this.total.set(res.total);
+    });
+  }
+
+  irPagina(pagina: number) {
+    this.pagina.set(pagina);
+    this.cargarProductos();
   }
 
   formVacio(): FormProducto {
@@ -77,36 +89,36 @@ export class AdminProductos implements OnInit {
   }
 
   guardar() {
-  this.cargando.set(true);
-  this.error.set(null);
+    this.cargando.set(true);
+    this.error.set(null);
 
-  const editando = this.productoEditando();
+    const editando = this.productoEditando();
 
-  const datos = {
-    categoria_id: this.form.categoria_id!,
-    nombre: this.form.nombre,
-    descripcion: this.form.descripcion,
-    precio: this.form.precio!,
-    stock: this.form.stock!,
-    activo: this.form.activo,
-  };
+    const datos = {
+      categoria_id: this.form.categoria_id!,
+      nombre: this.form.nombre,
+      descripcion: this.form.descripcion,
+      precio: this.form.precio!,
+      stock: this.form.stock!,
+      activo: this.form.activo,
+    };
 
-  const obs = editando
-    ? this.productoService.actualizar(editando.id, datos)
-    : this.productoService.crear(datos);
+    const obs = editando
+      ? this.productoService.actualizar(editando.id, datos)
+      : this.productoService.crear(datos);
 
-  obs.subscribe({
-    next: () => {
-      this.cargarProductos();
-      this.cerrarFormulario();
-      this.cargando.set(false);
-    },
-    error: (err) => {
-      this.error.set(err.error?.message ?? 'Error al guardar el producto.');
-      this.cargando.set(false);
-    },
-  });
-}
+    obs.subscribe({
+      next: () => {
+        this.cargarProductos();
+        this.cerrarFormulario();
+        this.cargando.set(false);
+      },
+      error: (err) => {
+        this.error.set(err.error?.message ?? 'Error al guardar el producto.');
+        this.cargando.set(false);
+      },
+    });
+  }
 
   eliminar(producto: Producto) {
     if (!confirm(`¿Eliminar "${producto.nombre}"?`)) return;

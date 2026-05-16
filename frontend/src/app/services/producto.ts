@@ -9,6 +9,14 @@ export interface Variante {
   stock: number;
 }
 
+export interface PaginatedResponse<T> {
+  data: T[];
+  current_page: number;
+  last_page: number;
+  total: number;
+  per_page: number;
+}
+
 export interface Producto {
   id: number;
   categoria_id: number;
@@ -29,9 +37,13 @@ export interface Producto {
 export class ProductoService {
   private apiUrl = 'http://localhost:8000/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getAll() {
+  getAll(page: number = 1) {
+    return this.http.get<PaginatedResponse<Producto>>(`${this.apiUrl}/productos?page=${page}`);
+  }
+
+  getAllSinPaginar() {
     return this.http.get<Producto[]>(`${this.apiUrl}/productos`);
   }
 
@@ -52,9 +64,9 @@ export class ProductoService {
   }
 
   subirImagen(id: number, file: File) {
-  const formData = new FormData();
-  formData.append('imagen', file);
-  formData.append('_method', 'PUT');
-  return this.http.post<Producto>(`${this.apiUrl}/productos/${id}`, formData);
+    const formData = new FormData();
+    formData.append('imagen', file);
+    formData.append('_method', 'PUT');
+    return this.http.post<Producto>(`${this.apiUrl}/productos/${id}`, formData);
   }
 }

@@ -24,7 +24,7 @@ export class Catalogo implements OnInit {
   });
 
   ngOnInit() {
-    this.productoService.getAll().subscribe(p => this.productos.set(p));
+    this.productoService.getAllSinPaginar().subscribe(p => this.productos.set(p));
     this.categoriaService.getAll().subscribe(c => this.categorias.set(c));
   }
 

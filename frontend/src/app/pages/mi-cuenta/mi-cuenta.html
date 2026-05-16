@@ -11,9 +11,9 @@
           <p>{{ usuario()?.correo }}</p>
           <div class="direccion-row">
             @if (usuario()?.direccion) {
-              <p>📍 {{ usuario()?.direccion }}</p>
+            <p>📍 {{ usuario()?.direccion }}</p>
             } @else {
-              <p class="sin-direccion">Sin dirección guardada</p>
+            <p class="sin-direccion">Sin dirección guardada</p>
             }
             <button class="btn-editar" (click)="abrirEditarDireccion()">✏️ Editar</button>
           </div>
@@ -25,34 +25,35 @@
 
     <!-- Modal editar dirección -->
     @if (editandoDireccion()) {
-      <div class="modal-overlay" (click)="cerrarEditarDireccion()"></div>
-      <div class="modal">
-        <div class="modal-header">
-          <h3>Editar dirección</h3>
-          <button class="btn-cerrar" (click)="cerrarEditarDireccion()">✕</button>
-        </div>
-        <div class="modal-body">
+    <div class="modal-overlay" (click)="cerrarEditarDireccion()"></div>
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Editar dirección</h3>
+        <button class="btn-cerrar" (click)="cerrarEditarDireccion()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
           <div class="form-group">
             <label for="direccion">Dirección</label>
-            <input
-              id="direccion"
-              type="text"
-              [ngModel]="nuevaDireccion()"
-              (ngModelChange)="nuevaDireccion.set($event)"
-              placeholder="Calle, número, ciudad..."
-            />
+            <input id="direccion" type="text" formControlName="direccion"
+              placeholder="Ej: Calle Mayor 12, 3ºB, Madrid, Madrid, España"
+              [class.input-error]="direccion?.invalid && direccion?.touched" />
+            @if (direccion?.touched && direccion?.hasError('required')) {
+            <span class="field-error">La dirección es obligatoria.</span>
+            }
+            @if (direccion?.touched && direccion?.hasError('formatoInvalido')) {
+            <span class="field-error">Formato: Calle Nombre Nº, Piso/Edificio, Ciudad, Provincia, País</span>
+            }
           </div>
-          @if (error()) {
-            <p class="error">{{ error() }}</p>
-          }
-        </div>
-        <div class="modal-footer">
-          <button class="btn-secondary" (click)="cerrarEditarDireccion()">Cancelar</button>
-          <button class="btn-primary" (click)="guardarDireccion()" [disabled]="guardando()">
-            {{ guardando() ? 'Guardando...' : 'Guardar' }}
-          </button>
-        </div>
+        </form>
       </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="cerrarEditarDireccion()">Cancelar</button>
+        <button class="btn-primary" (click)="guardarDireccion()" [disabled]="guardando()">
+          {{ guardando() ? 'Guardando...' : 'Guardar' }}
+        </button>
+      </div>
+    </div>
     }
 
     <!-- Pedidos -->
@@ -60,35 +61,35 @@
       <h2>Mis pedidos</h2>
 
       @if (pedidos().length === 0) {
-        <div class="sin-pedidos">
-          <p>Todavía no has realizado ningún pedido.</p>
-          <a routerLink="/catalogo" class="btn-primary">Explorar catálogo</a>
-        </div>
+      <div class="sin-pedidos">
+        <p>Todavía no has realizado ningún pedido.</p>
+        <a routerLink="/catalogo" class="btn-primary">Explorar catálogo</a>
+      </div>
       } @else {
-        @for (pedido of pedidos(); track pedido.id) {
-          <div class="pedido-card">
-            <div class="pedido-header">
-              <span class="pedido-id">Pedido #{{ pedido.id }}</span>
-              <span [class]="estadoClase(pedido.estado)">{{ pedido.estado }}</span>
-              <span class="pedido-fecha">{{ pedido.created_at | date:'dd/MM/yyyy' }}</span>
-            </div>
-            <div class="pedido-items">
-              @for (item of pedido.items; track item.id) {
-                <div class="pedido-item">
-                  <span>{{ item.producto?.nombre }}
-                    @if (item.variante) { ({{ item.variante.nombre }}) }
-                    x{{ item.cantidad }}
-                  </span>
-                  <span>{{ (item.precio_unitario * item.cantidad) | number:'1.2-2' }}€</span>
-                </div>
-              }
-            </div>
-            <div class="pedido-total">
-              <span>Total</span>
-              <span>{{ pedido.total | number:'1.2-2' }}€</span>
-            </div>
+      @for (pedido of pedidos(); track pedido.id) {
+      <div class="pedido-card">
+        <div class="pedido-header">
+          <span class="pedido-id">Pedido #{{ pedido.id }}</span>
+          <span [class]="estadoClase(pedido.estado)">{{ pedido.estado }}</span>
+          <span class="pedido-fecha">{{ pedido.created_at | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="pedido-items">
+          @for (item of pedido.items; track item.id) {
+          <div class="pedido-item">
+            <span>{{ item.producto?.nombre }}
+              @if (item.variante) { ({{ item.variante.nombre }}) }
+              x{{ item.cantidad }}
+            </span>
+            <span>{{ (item.precio_unitario * item.cantidad) | number:'1.2-2' }}€</span>
           </div>
-        }
+          }
+        </div>
+        <div class="pedido-total">
+          <span>Total</span>
+          <span>{{ pedido.total | number:'1.2-2' }}€</span>
+        </div>
+      </div>
+      }
       }
     </div>
   </div>

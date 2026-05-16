@@ -163,3 +163,31 @@
     font-size: 0.8rem;
     padding: 0.5rem 1rem;
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .detalle {
+        padding: 2rem 0;
+    }
+
+    .detalle-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .detalle-imagen .imagen-placeholder {
+        font-size: 5rem;
+    }
+
+    .detalle-info h1 {
+        font-size: 1.5rem;
+    }
+
+    .precio span {
+        font-size: 1.5rem;
+    }
+
+    .btn-carrito {
+        width: 100%;
+    }
+}

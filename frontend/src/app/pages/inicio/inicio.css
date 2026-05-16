@@ -141,6 +141,7 @@
     line-height: 1.6;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -162,4 +163,33 @@
 
 .ver-todos {
   text-align: center;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero {
+    padding: 5rem 1rem;
+  }
+
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .historia-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .historia-imagen {
+    display: none;
+  }
+
+  .valores-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .productos-grid {
+    grid-template-columns: 1fr;
+  }
 }

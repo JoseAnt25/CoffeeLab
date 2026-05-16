@@ -83,3 +83,32 @@ nav.navbar {
   align-items: center;
   justify-content: center;
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  nav.navbar {
+    padding: 1rem;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .navbar-links {
+    order: 3;
+    width: 100%;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  .navbar-actions {
+    gap: 1rem;
+  }
+
+  .navbar-actions a,
+  .navbar-actions button {
+    font-size: 0.75rem;
+  }
+}

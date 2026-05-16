@@ -11,10 +11,18 @@ use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $pedidos = Pedido::with(['items.producto', 'items.variante', 'usuario'])
-            ->get();
+        $usuario = $request->user();
+
+        if ($usuario->rol === 'admin') {
+            $pedidos = Pedido::with(['items.producto', 'items.variante', 'usuario'])
+                ->paginate(10);
+        } else {
+            $pedidos = Pedido::with(['items.producto', 'items.variante'])
+                ->where('usuario_id', $usuario->id)
+                ->paginate(10);
+        }
 
         return response()->json($pedidos);
     }

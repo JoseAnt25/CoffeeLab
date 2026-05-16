@@ -147,3 +147,27 @@
   margin-bottom: 0.8rem;
   display: block;
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .carrito {
+    padding: 2rem 0;
+  }
+
+  .carrito-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .carrito-item {
+    grid-template-columns: 60px 1fr auto;
+    gap: 1rem;
+  }
+
+  .item-subtotal {
+    display: none;
+  }
+
+  .carrito-resumen {
+    position: static;
+  }
+}

@@ -51,6 +51,17 @@
         }
       </tbody>
     </table>
+
+    <!-- Paginación -->
+    <div class="paginacion">
+      <span class="paginacion-info">{{ total() }} productos</span>
+      <div class="paginacion-controles">
+        <button class="btn-pagina" (click)="irPagina(pagina() - 1)" [disabled]="pagina() === 1">←</button>
+        <span>{{ pagina() }} / {{ ultimaPagina() }}</span>
+        <button class="btn-pagina" (click)="irPagina(pagina() + 1)" [disabled]="pagina() === ultimaPagina()">→</button>
+      </div>
+    </div>
+
   </div>
 </div>
 
