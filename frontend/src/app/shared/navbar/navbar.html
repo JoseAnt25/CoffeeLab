@@ -1,6 +1,7 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <nav class="navbar">
   <a routerLink="/" class="navbar-brand">
-    ☕ CoffeLab
+    <img src="media\Otro\Logo.png" alt="">
   </a>
 
   <ul class="navbar-links">
@@ -10,7 +11,7 @@
 
   <div class="navbar-actions">
     <button class="carrito-icon" (click)="abrirPanel()">
-      🛒
+      <span class="material-symbols-outlined">shopping_cart</span>
       @if (carrito.totalItems() > 0) {
         <span class="badge">{{ carrito.totalItems() }}</span>
       }

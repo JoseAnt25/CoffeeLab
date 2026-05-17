@@ -18,6 +18,12 @@ nav.navbar {
   letter-spacing: 0.02em;
 }
 
+.navbar-brand img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
 .navbar-links {
   display: flex;
   gap: 2.5rem;

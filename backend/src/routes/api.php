@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\VarianteProductoController;
 use Illuminate\Support\Facades\Route;
 
 // Rutas públicas
@@ -19,6 +20,9 @@ Route::get('/categorias/{categoria}', [CategoriaController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/productos/{producto}/imagen', [ProductoController::class, 'update']);
+Route::post('/productos/{producto}/variantes', [VarianteProductoController::class, 'store']);
+Route::put('/variantes/{variante}', [VarianteProductoController::class, 'update']);
+Route::delete('/variantes/{variante}', [VarianteProductoController::class, 'destroy']);
 Route::put('/me', [AuthController::class, 'update']);
 Route::get('/me', [AuthController::class, 'me']);
 

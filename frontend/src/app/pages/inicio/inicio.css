@@ -54,6 +54,12 @@
   aspect-ratio: 4/3;
 }
 
+.imagen-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* ===== VALORES ===== */
 .valores {
   background: var(--color-crema);
@@ -113,6 +119,10 @@
 }
 
 .producto-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
   border: 1px solid var(--color-beige);
   border-radius: var(--radio);
   overflow: hidden;
@@ -125,9 +135,20 @@
 
   .producto-imagen {
     background: var(--color-crema);
-    padding: 2rem;
+    padding: 2.5rem;
     text-align: center;
     font-size: 4rem;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .producto-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   h3 {

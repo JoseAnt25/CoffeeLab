@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 import { ProductoService, Producto, Variante } from '../../../services/producto';
 import { CategoriaService, Categoria } from '../../../services/categoria';
+import { HttpClient } from '@angular/common/http';
 
 interface FormProducto {
   categoria_id: number | null;
@@ -11,6 +12,12 @@ interface FormProducto {
   precio: number | null;
   stock: number | null;
   activo: boolean;
+}
+
+interface FormVariante {
+  nombre: string;
+  modificador_precio: number;
+  stock: number;
 }
 
 @Component({
@@ -22,6 +29,9 @@ interface FormProducto {
 export class AdminProductos implements OnInit {
   private productoService = inject(ProductoService);
   private categoriaService = inject(CategoriaService);
+  private http = inject(HttpClient);
+
+  private apiUrl = 'http://localhost:8000/api';
 
   productos = signal<Producto[]>([]);
   categorias = signal<Categoria[]>([]);
@@ -34,6 +44,8 @@ export class AdminProductos implements OnInit {
   error = signal<string | null>(null);
 
   form: FormProducto = this.formVacio();
+  variantes = signal<Variante[]>([]);
+  nuevaVariante: FormVariante = this.varianteVacia();
 
   ngOnInit() {
     this.cargarProductos();
@@ -64,8 +76,14 @@ export class AdminProductos implements OnInit {
     };
   }
 
+  varianteVacia(): FormVariante {
+    return { nombre: '', modificador_precio: 0, stock: 0 };
+  }
+
   abrirCrear() {
     this.form = this.formVacio();
+    this.variantes.set([]);
+    this.nuevaVariante = this.varianteVacia();
     this.productoEditando.set(null);
     this.mostrarFormulario.set(true);
   }
@@ -79,6 +97,8 @@ export class AdminProductos implements OnInit {
       stock: producto.stock,
       activo: producto.activo,
     };
+    this.variantes.set(producto.variantes ?? []);
+    this.nuevaVariante = this.varianteVacia();
     this.productoEditando.set(producto);
     this.mostrarFormulario.set(true);
   }
@@ -88,13 +108,41 @@ export class AdminProductos implements OnInit {
     this.error.set(null);
   }
 
+  agregarVariante() {
+    if (!this.nuevaVariante.nombre) return;
+    const editando = this.productoEditando();
+
+    if (editando) {
+      this.http.post<Variante>(`${this.apiUrl}/productos/${editando.id}/variantes`, this.nuevaVariante)
+        .subscribe(v => {
+          this.variantes.update(vars => [...vars, v]);
+          this.nuevaVariante = this.varianteVacia();
+        });
+    } else {
+      this.variantes.update(vars => [...vars, { ...this.nuevaVariante, id: Date.now(), producto_id: 0 }]);
+      this.nuevaVariante = this.varianteVacia();
+    }
+  }
+
+  eliminarVariante(variante: Variante) {
+    const editando = this.productoEditando();
+    if (editando) {
+      this.http.delete(`${this.apiUrl}/variantes/${variante.id}`)
+        .subscribe(() => {
+          this.variantes.update(vars => vars.filter(v => v.id !== variante.id));
+        });
+    } else {
+      this.variantes.update(vars => vars.filter(v => v.id !== variante.id));
+    }
+  }
+
   guardar() {
     this.cargando.set(true);
     this.error.set(null);
 
     const editando = this.productoEditando();
 
-    const datos = {
+    const datos: any = {
       categoria_id: this.form.categoria_id!,
       nombre: this.form.nombre,
       descripcion: this.form.descripcion,
@@ -102,6 +150,10 @@ export class AdminProductos implements OnInit {
       stock: this.form.stock!,
       activo: this.form.activo,
     };
+
+    if (!editando) {
+      datos.variantes = this.variantes();
+    }
 
     const obs = editando
       ? this.productoService.actualizar(editando.id, datos)

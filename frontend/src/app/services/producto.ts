@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
 
 export interface Variante {
   id: number;
@@ -44,8 +45,10 @@ export class ProductoService {
   }
 
   getAllSinPaginar() {
-    return this.http.get<Producto[]>(`${this.apiUrl}/productos`);
-  }
+  return this.http.get<PaginatedResponse<Producto>>(`${this.apiUrl}/productos?per_page=100`).pipe(
+    map(res => res.data)
+  );
+}
 
   getById(id: number) {
     return this.http.get<Producto>(`${this.apiUrl}/productos/${id}`);

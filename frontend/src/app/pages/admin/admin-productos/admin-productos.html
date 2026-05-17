@@ -20,34 +20,34 @@
       </thead>
       <tbody>
         @for (producto of productos(); track producto.id) {
-          <tr>
-            <td>
-              <div class="tabla-imagen">
-                @if (producto.imagen_url) {
-                  <img [src]="producto.imagen_url" [alt]="producto.nombre" />
-                } @else {
-                  <span>☕</span>
-                }
-              </div>
-            </td>
-            <td>{{ producto.nombre }}</td>
-            <td>{{ producto.categoria?.nombre }}</td>
-            <td>{{ producto.precio | number:'1.2-2' }}€</td>
-            <td>{{ producto.stock }}</td>
-            <td>
-              <span [class]="producto.activo ? 'estado-activo' : 'estado-inactivo'">
-                {{ producto.activo ? 'Activo' : 'Inactivo' }}
-              </span>
-            </td>
-            <td class="acciones">
-              <label class="btn-tabla" title="Subir imagen">
-                📷
-                <input type="file" accept="image/*" (change)="subirImagen(producto, $event)" style="display:none" />
-              </label>
-              <button class="btn-tabla" (click)="abrirEditar(producto)">✏️</button>
-              <button class="btn-tabla btn-danger" (click)="eliminar(producto)">🗑️</button>
-            </td>
-          </tr>
+        <tr>
+          <td>
+            <div class="tabla-imagen">
+              @if (producto.imagen_url) {
+              <img [src]="producto.imagen_url" [alt]="producto.nombre" />
+              } @else {
+              <span>☕</span>
+              }
+            </div>
+          </td>
+          <td>{{ producto.nombre }}</td>
+          <td>{{ producto.categoria?.nombre }}</td>
+          <td>{{ producto.precio | number:'1.2-2' }}€</td>
+          <td>{{ producto.stock }}</td>
+          <td>
+            <span [class]="producto.activo ? 'estado-activo' : 'estado-inactivo'">
+              {{ producto.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="acciones">
+            <label class="btn-tabla" title="Subir imagen">
+              📷
+              <input type="file" accept="image/*" (change)="subirImagen(producto, $event)" style="display:none" />
+            </label>
+            <button class="btn-tabla" (click)="abrirEditar(producto)">✏️</button>
+            <button class="btn-tabla btn-danger" (click)="eliminar(producto)">🗑️</button>
+          </td>
+        </tr>
         }
       </tbody>
     </table>
@@ -67,62 +67,88 @@
 
 <!-- Modal formulario -->
 @if (mostrarFormulario()) {
-  <div class="modal-overlay" (click)="cerrarFormulario()"></div>
-  <div class="modal">
-    <div class="modal-header">
-      <h2>{{ productoEditando() ? 'Editar producto' : 'Nuevo producto' }}</h2>
-      <button class="btn-cerrar" (click)="cerrarFormulario()">✕</button>
+<div class="modal-overlay" (click)="cerrarFormulario()"></div>
+<div class="modal">
+  <div class="modal-header">
+    <h2>{{ productoEditando() ? 'Editar producto' : 'Nuevo producto' }}</h2>
+    <button class="btn-cerrar" (click)="cerrarFormulario()">✕</button>
+  </div>
+
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Categoría</label>
+      <select [(ngModel)]="form.categoria_id">
+        <option [value]="null">Selecciona una categoría</option>
+        @for (cat of categorias(); track cat.id) {
+        <option [value]="cat.id">{{ cat.nombre }}</option>
+        }
+      </select>
     </div>
 
-    <div class="modal-body">
+    <div class="form-group">
+      <label>Nombre</label>
+      <input type="text" [(ngModel)]="form.nombre" placeholder="Nombre del producto" />
+    </div>
+
+    <div class="form-group">
+      <label>Descripción</label>
+      <textarea [(ngModel)]="form.descripcion" placeholder="Descripción del producto" rows="3"></textarea>
+    </div>
+
+    <div class="form-row">
       <div class="form-group">
-        <label>Categoría</label>
-        <select [(ngModel)]="form.categoria_id">
-          <option [value]="null">Selecciona una categoría</option>
-          @for (cat of categorias(); track cat.id) {
-            <option [value]="cat.id">{{ cat.nombre }}</option>
-          }
-        </select>
+        <label>Precio (€)</label>
+        <input type="number" [(ngModel)]="form.precio" placeholder="0.00" min="0" step="0.01" />
       </div>
-
       <div class="form-group">
-        <label>Nombre</label>
-        <input type="text" [(ngModel)]="form.nombre" placeholder="Nombre del producto" />
+        <label>Stock</label>
+        <input type="number" [(ngModel)]="form.stock" placeholder="0" min="0" />
       </div>
+    </div>
 
-      <div class="form-group">
-        <label>Descripción</label>
-        <textarea [(ngModel)]="form.descripcion" placeholder="Descripción del producto" rows="3"></textarea>
+    <div class="form-group form-check">
+      <label>
+        <input type="checkbox" [(ngModel)]="form.activo" />
+        Producto activo
+      </label>
+    </div>
+
+    @if (error()) {
+    <p class="error">{{ error() }}</p>
+    }
+  </div>
+
+  <!-- Variantes -->
+  <div class="variantes-admin">
+    <h4>Variantes</h4>
+
+    @if (variantes().length > 0) {
+    <div class="variantes-lista">
+      @for (variante of variantes(); track variante.id) {
+      <div class="variante-item">
+        <span class="variante-nombre">{{ variante.nombre }}</span>
+        <span class="variante-precio">+{{ variante.modificador_precio }}€</span>
+        <span class="variante-stock">Stock: {{ variante.stock }}</span>
+        <button class="btn-tabla btn-danger" (click)="eliminarVariante(variante)">🗑️</button>
       </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Precio (€)</label>
-          <input type="number" [(ngModel)]="form.precio" placeholder="0.00" min="0" step="0.01" />
-        </div>
-        <div class="form-group">
-          <label>Stock</label>
-          <input type="number" [(ngModel)]="form.stock" placeholder="0" min="0" />
-        </div>
-      </div>
-
-      <div class="form-group form-check">
-        <label>
-          <input type="checkbox" [(ngModel)]="form.activo" />
-          Producto activo
-        </label>
-      </div>
-
-      @if (error()) {
-        <p class="error">{{ error() }}</p>
       }
     </div>
+    } @else {
+    <p class="sin-variantes">Sin variantes. Añade una abajo.</p>
+    }
 
-    <div class="modal-footer">
-      <button class="btn-secondary" (click)="cerrarFormulario()">Cancelar</button>
-      <button class="btn-primary" (click)="guardar()" [disabled]="cargando()">
-        {{ cargando() ? 'Guardando...' : 'Guardar' }}
-      </button>
+    <div class="nueva-variante">
+      <input type="text" [(ngModel)]="nuevaVariante.nombre" placeholder="Nombre (ej: 250g)" />
+      <input type="number" [(ngModel)]="nuevaVariante.modificador_precio" placeholder="+ Precio (€)" step="0.01" />
+      <input type="number" [(ngModel)]="nuevaVariante.stock" placeholder="Stock" min="0" />
+      <button class="btn-secondary" (click)="agregarVariante()">+ Añadir</button>
     </div>
   </div>
+  <div class="modal-footer">
+    <button class="btn-secondary" (click)="cerrarFormulario()">Cancelar</button>
+    <button class="btn-primary" (click)="guardar()" [disabled]="cargando()">
+      {{ cargando() ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </div>
+</div>
 }

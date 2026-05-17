@@ -29,7 +29,9 @@
         </p>
       </div>
       <div class="historia-imagen">
-        <div class="imagen-placeholder">🌱</div>
+        <div class="imagen-placeholder">
+          <img src="\media\Otro\inicio.jpg" alt="">
+        </div>
       </div>
     </div>
   </div>
@@ -71,17 +73,18 @@
     <div class="productos-grid">
       @for (producto of productosDestacados(); track producto.id) {
       <div class="producto-card">
-        <div class="producto-imagen">
-          @if (producto.imagen_url) {
-          <img [src]="producto.imagen_url" [alt]="producto.nombre" />
-          } @else {
-          <span>☕</span>
-          }
-        </div>
-        <h3>{{ producto.nombre }}</h3>
-        <p>{{ producto.descripcion }}</p>
-        <span class="precio">desde {{ producto.precio }}€</span>
-        <a [routerLink]="['/catalogo', producto.id]" class="btn-secondary">Ver producto</a>
+        <a [routerLink]="['/catalogo', producto.id]">
+          <div class="producto-imagen">
+            @if (producto.imagen_url) {
+            <img [src]="producto.imagen_url" [alt]="producto.nombre" />
+            } @else {
+            <span>☕</span>
+            }
+          </div>
+          <h3>{{ producto.nombre }}</h3>
+          <p>{{ producto.descripcion }}</p>
+          <span class="precio">desde {{ producto.precio }}€</span>
+        </a>
       </div>
       }
     </div>

@@ -10,7 +10,7 @@
         @if (producto()?.imagen_url) {
         <img [src]="producto()?.imagen_url" [alt]="producto()?.nombre" />
         } @else {
-        <div class="imagen-placeholder">☕</div>
+          <img src="media/Cafes/Etiopia_Yirgacheffe.png" [alt]="producto()?.nombre" />
         }
         @if (auth.esAdmin()) {
         <div class="upload-imagen">

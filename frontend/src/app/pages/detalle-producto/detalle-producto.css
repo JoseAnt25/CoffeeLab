@@ -148,9 +148,11 @@
 
 .detalle-imagen img {
     width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
+    aspect-ratio: unset;
+    object-fit: contain;
     border-radius: var(--radio);
+    background: var(--color-crema);
+    padding: 1rem;
 }
 
 .upload-imagen {
@@ -175,8 +177,13 @@
         gap: 2rem;
     }
 
-    .detalle-imagen .imagen-placeholder {
-        font-size: 5rem;
+    .detalle-imagen img {
+        width: 100%;
+        aspect-ratio: unset;
+        object-fit: contain;
+        border-radius: var(--radio);
+        background: var(--color-crema);
+        padding: 1rem;
     }
 
     .detalle-info h1 {

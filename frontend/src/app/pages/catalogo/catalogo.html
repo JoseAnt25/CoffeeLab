@@ -18,22 +18,23 @@
     <div class="productos-grid">
       @for (producto of productosFiltrados(); track producto.id) {
       <div class="producto-card">
-        <div class="producto-imagen">
-          @if (producto.imagen_url) {
-          <img [src]="producto.imagen_url" [alt]="producto.nombre" />
-          } @else {
-          <span>☕</span>
-          }
-        </div>
-        <div class="producto-info">
-          <span class="categoria-tag">{{ producto.categoria?.nombre }}</span>
-          <h3>{{ producto.nombre }}</h3>
-          <p>{{ producto.descripcion }}</p>
-          <div class="producto-footer">
-            <span class="precio">desde {{ producto.precio }}€</span>
-            <a [routerLink]="['/catalogo', producto.id]" class="btn-primary">Ver más</a>
+        <a [routerLink]="['/catalogo', producto.id]" class="producto-card">
+          <div class="producto-imagen">
+            @if (producto.imagen_url) {
+            <img [src]="producto.imagen_url" [alt]="producto.nombre" />
+            } @else {
+            <img src="media/Cafes/Etiopia_Yirgacheffe.png" [alt]="producto.nombre" />
+            }
           </div>
-        </div>
+          <div class="producto-info">
+            <span class="categoria-tag">{{ producto.categoria?.nombre }}</span>
+            <h3>{{ producto.nombre }}</h3>
+            <p>{{ producto.descripcion }}</p>
+            <div class="producto-footer">
+              <span class="precio">desde {{ producto.precio }}€</span>
+            </div>
+          </div>
+        </a>
       </div>
       } @empty {
       <p class="sin-resultados">No hay productos en esta categoría.</p>

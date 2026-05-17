@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
 
 export interface ItemPedido {
   id: number;
@@ -54,8 +55,10 @@ export class PedidoService {
   }
 
   getAllSinPaginar() {
-    return this.http.get<Pedido[]>(`${this.apiUrl}/pedidos`);
-  }
+  return this.http.get<PaginatedResponse<Pedido>>(`${this.apiUrl}/pedidos?per_page=100`).pipe(
+    map(res => res.data)
+  );
+}
 
   getById(id: number) {
     return this.http.get<Pedido>(`${this.apiUrl}/pedidos/${id}`);
