@@ -37,10 +37,62 @@ class ProductoSeeder extends Seeder
                 ],
             ],
             [
+                'categoria_id' => 1,
+                'nombre'       => 'Café Guatemala Antigua',
+                'descripcion'  => 'Café equilibrado con notas a chocolate amargo, almendra y un toque de canela. Tostado medio.',
+                'precio'       => 13.90,
+                'stock'        => 80,
+                'activo'       => true,
+                'variantes'    => [
+                    ['nombre' => '250g', 'modificador_precio' => 0,     'stock' => 30],
+                    ['nombre' => '500g', 'modificador_precio' => 7.50,  'stock' => 30],
+                    ['nombre' => '1kg',  'modificador_precio' => 17.00, 'stock' => 20],
+                ],
+            ],
+            [
+                'categoria_id' => 1,
+                'nombre'       => 'Café Brasil Cerrado',
+                'descripcion'  => 'Café de cuerpo intenso con notas a nuez, caramelo y cacao. Ideal para espresso. Tostado oscuro.',
+                'precio'       => 11.90,
+                'stock'        => 90,
+                'activo'       => true,
+                'variantes'    => [
+                    ['nombre' => '250g', 'modificador_precio' => 0,     'stock' => 35],
+                    ['nombre' => '500g', 'modificador_precio' => 7.00,  'stock' => 35],
+                    ['nombre' => '1kg',  'modificador_precio' => 16.00, 'stock' => 20],
+                ],
+            ],
+            [
+                'categoria_id' => 1,
+                'nombre'       => 'Café Kenia AA',
+                'descripcion'  => 'Café vibrante con notas a grosella negra, tomate y cítricos brillantes. Tostado medio.',
+                'precio'       => 15.90,
+                'stock'        => 60,
+                'activo'       => true,
+                'variantes'    => [
+                    ['nombre' => '250g', 'modificador_precio' => 0,     'stock' => 25],
+                    ['nombre' => '500g', 'modificador_precio' => 9.00,  'stock' => 25],
+                    ['nombre' => '1kg',  'modificador_precio' => 20.00, 'stock' => 10],
+                ],
+            ],
+            [
+                'categoria_id' => 1,
+                'nombre'       => 'Café Costa Rica Tarrazú',
+                'descripcion'  => 'Café limpio y brillante con notas a miel, durazno y naranja. Proceso honey. Tostado claro.',
+                'precio'       => 14.50,
+                'stock'        => 70,
+                'activo'       => true,
+                'variantes'    => [
+                    ['nombre' => '250g', 'modificador_precio' => 0,     'stock' => 30],
+                    ['nombre' => '500g', 'modificador_precio' => 8.00,  'stock' => 25],
+                    ['nombre' => '1kg',  'modificador_precio' => 18.00, 'stock' => 15],
+                ],
+            ],
+            [
                 'categoria_id' => 2, // Cafeteras
                 'nombre'       => 'Cafetera Italiana Bialetti Moka Express',
                 'descripcion'  => 'La cafetera italiana clásica. Fabricada en aluminio de alta calidad.',
-                'precio'       => 29.90,
+                'precio'       => 180,
                 'stock'        => 50,
                 'activo'       => true,
                 'variantes'    => [
@@ -53,7 +105,7 @@ class ProductoSeeder extends Seeder
                 'categoria_id' => 2, // Cafeteras
                 'nombre'       => 'Cafetera de Émbolo French Press',
                 'descripcion'  => 'Cafetera de émbolo para un café rico y aromático. Capacidad 1L.',
-                'precio'       => 24.90,
+                'precio'       => 140,
                 'stock'        => 40,
                 'activo'       => true,
                 'variantes'    => [],

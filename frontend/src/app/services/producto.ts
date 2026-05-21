@@ -45,10 +45,10 @@ export class ProductoService {
   }
 
   getAllSinPaginar() {
-  return this.http.get<PaginatedResponse<Producto>>(`${this.apiUrl}/productos?per_page=100`).pipe(
-    map(res => res.data)
-  );
-}
+    return this.http.get<PaginatedResponse<Producto>>(`${this.apiUrl}/productos?per_page=100`).pipe(
+      map(res => res.data)
+    );
+  }
 
   getById(id: number) {
     return this.http.get<Producto>(`${this.apiUrl}/productos/${id}`);
@@ -67,9 +67,8 @@ export class ProductoService {
   }
 
   subirImagen(id: number, file: File) {
-    const formData = new FormData();
-    formData.append('imagen', file);
-    formData.append('_method', 'PUT');
-    return this.http.post<Producto>(`${this.apiUrl}/productos/${id}`, formData);
-  }
+  const formData = new FormData();
+  formData.append('imagen', file);
+  return this.http.post<Producto>(`${this.apiUrl}/productos/${id}/imagen`, formData);
+ }
 }

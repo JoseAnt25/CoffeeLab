@@ -1,6 +1,6 @@
 /* ===== HERO ===== */
 .hero {
-  background: var(--color-crema);
+  background: url('/media/Otro/banner-inicio-2.jpeg') center/cover no-repeat;
   padding: 8rem 2rem;
   text-align: center;
 }

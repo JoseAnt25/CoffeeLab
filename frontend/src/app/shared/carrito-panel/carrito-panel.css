@@ -91,7 +91,7 @@
 
 .panel-item {
   display: grid;
-  grid-template-columns: 60px 1fr auto;
+  grid-template-columns: 1fr auto;
   gap: 1rem;
   align-items: start;
   padding-bottom: 1rem;

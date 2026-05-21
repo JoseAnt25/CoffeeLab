@@ -110,4 +110,21 @@ class ProductoController extends Controller
 
         return response()->json(['mensaje' => 'Producto eliminado correctamente.']);
     }
+
+    public function subirImagen(Request $request, string $id): JsonResponse{
+        $producto = Producto::findOrFail($id);
+
+        $request->validate([
+            'imagen' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        if ($producto->imagen) {
+            Storage::disk('public')->delete($producto->imagen);
+        }
+
+        $producto->imagen = $request->file('imagen')->store('productos', 'public');
+        $producto->save();
+
+        return response()->json($producto);
+    }
 }

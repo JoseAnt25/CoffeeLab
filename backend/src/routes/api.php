@@ -19,8 +19,7 @@ Route::get('/categorias/{categoria}', [CategoriaController::class, 'show']);
 // Rutas protegidas
 Route::middleware('auth:sanctum')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout']);
-Route::post('/productos/{producto}/imagen', [ProductoController::class, 'update']);
-Route::post('/productos/{producto}/variantes', [VarianteProductoController::class, 'store']);
+Route::post('/productos/{producto}/imagen', [ProductoController::class, 'subirImagen']);Route::post('/productos/{producto}/variantes', [VarianteProductoController::class, 'store']);
 Route::put('/variantes/{variante}', [VarianteProductoController::class, 'update']);
 Route::delete('/variantes/{variante}', [VarianteProductoController::class, 'destroy']);
 Route::put('/me', [AuthController::class, 'update']);

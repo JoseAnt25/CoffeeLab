@@ -40,7 +40,7 @@
 
 .carrito-item {
   display: grid;
-  grid-template-columns: 80px 1fr auto auto auto;
+  grid-template-columns: 1fr auto auto auto;
   gap: 1.5rem;
   align-items: center;
   padding: 1.5rem;

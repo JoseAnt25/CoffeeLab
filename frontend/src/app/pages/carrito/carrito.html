@@ -14,7 +14,6 @@
         <div class="carrito-items">
           @for (item of carritoService.items(); track item.producto.id) {
             <div class="carrito-item">
-              <div class="item-imagen">☕</div>
               <div class="item-info">
                 <h3>{{ item.producto.nombre }}</h3>
                 @if (item.variante) {

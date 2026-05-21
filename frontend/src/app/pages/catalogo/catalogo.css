@@ -56,7 +56,6 @@
 
 .producto-card:hover {
   box-shadow: var(--sombra);
-  transform: translateY(-2px);
 }
 
 .producto-imagen {
