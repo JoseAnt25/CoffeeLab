@@ -1,0 +1,29 @@
+FROM php:8.4-cli-alpine
+
+RUN apk add --no-cache \
+    bash \
+    curl \
+    libzip-dev \
+    zip \
+    oniguruma-dev \
+    unzip \
+    && docker-php-ext-install pdo pdo_mysql mbstring bcmath zip
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+COPY src/ .
+
+RUN composer install --no-dev --optimize-autoloader
+
+RUN php artisan config:clear && \
+    php artisan route:clear && \
+    php artisan view:clear
+
+EXPOSE 8000
+
+CMD php artisan migrate --force && \
+    php artisan db:seed --force && \
+    php artisan storage:link && \
+    php artisan serve --host=0.0.0.0 --port=8000
