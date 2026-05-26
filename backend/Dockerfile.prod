@@ -13,7 +13,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-COPY src/composer.json src/composer.lock ./
+COPY src/composer.json ./
+COPY src/composer.lock ./
 
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts -v
 
