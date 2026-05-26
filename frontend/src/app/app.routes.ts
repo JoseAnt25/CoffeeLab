@@ -2,6 +2,32 @@ import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
 
+/**
+ * Configuración de rutas de la aplicación CoffeLab.
+ *
+ * Todas las rutas usan lazy loading (loadComponent) para cargar
+ * los componentes solo cuando se navega a ellos, mejorando el
+ * rendimiento inicial de la aplicación.
+ *
+ * Rutas públicas (sin autenticación):
+ * - /           → Página de inicio con hero, historia y productos destacados
+ * - /catalogo   → Catálogo completo con filtros por categoría
+ * - /catalogo/:id → Detalle de producto con variantes y carrito
+ * - /carrito    → Página del carrito de compras
+ * - /login      → Formulario de inicio de sesión
+ * - /register   → Formulario de registro de usuario
+ *
+ * Rutas protegidas (requieren autenticación - authGuard):
+ * - /checkout   → Proceso de finalización de pedido
+ * - /mi-cuenta  → Perfil y historial de pedidos del usuario
+ *
+ * Rutas de administración (requieren rol admin - adminGuard):
+ * - /admin              → Redirige a /admin/productos
+ * - /admin/productos    → Gestión del catálogo de productos
+ * - /admin/pedidos      → Gestión y seguimiento de pedidos
+ *
+ * Cualquier ruta no reconocida redirige a la página de inicio.
+ */
 export const routes: Routes = [
   {
     path: '',
@@ -43,6 +69,7 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     children: [
       {
+        // Redirige /admin a /admin/productos por defecto
         path: '',
         redirectTo: 'productos',
         pathMatch: 'full',
@@ -58,6 +85,7 @@ export const routes: Routes = [
     ],
   },
   {
+    // Ruta comodín: redirige cualquier ruta no reconocida al inicio
     path: '**',
     redirectTo: '',
   },

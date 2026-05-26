@@ -1,20 +1,40 @@
+/* ==========================================================================
+   COMPONENTE: PIE DE PÁGINA (FOOTER)
+   Propósito: Contiene la información de la marca, enlaces de navegación,
+   datos de contacto y el aviso legal (copyright).
+   ========================================================================== */
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
 footer {
   background: var(--color-negro);
   color: var(--color-blanco);
+  /* Padding generoso arriba (4rem) para separar visualmente el contenido del footer. */
   padding: 4rem 2rem 2rem;
+  /* Margen superior para empujar el footer hacia abajo, manteniéndolo alejado del contenido principal. */
   margin-top: 6rem;
 }
 
+/* ===== ESTRUCTURA INTERNA (GRID) ===== */
 .footer-content {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto; /* Centra el contenedor horizontalmente en pantallas grandes */
+  
   display: grid;
+  /* Divide el footer en 3 columnas:
+    - 2fr: Ocupa el doble de espacio relativo (ideal para el logo y su descripción larga).
+    - 1fr: Espacio para los enlaces rápidos.
+    - 1fr: Espacio para la información de contacto. 
+  */
   grid-template-columns: 2fr 1fr 1fr;
   gap: 3rem;
   padding-bottom: 3rem;
+  
+  /* Separador sutil utilizando transparencia (rgba) para evitar usar un color 
+     gris sólido que pueda romper la armonía con el fondo negro. */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* ===== SECCIÓN: MARCA / BRANDING ===== */
 .footer-brand span {
   font-family: var(--fuente-titulo);
   font-size: 1.4rem;
@@ -22,22 +42,27 @@ footer {
 }
 
 .footer-brand p {
+  /* Uso de rgba con 0.5 de opacidad en lugar de un color estático.
+     Esto asegura que el texto adquiera naturalmente el tono del fondo subyacente. */
   color: rgba(255, 255, 255, 0.5);
   margin-top: 0.8rem;
   font-size: 0.9rem;
 }
 
+/* ===== SECCIONES: ENLACES Y CONTACTO ===== */
 .footer-links h4,
 .footer-contact h4 {
   font-size: 0.75rem;
   text-transform: uppercase;
+  /* El 'letter-spacing' alto aporta un aspecto más editorial y mejora 
+     la legibilidad de los textos pequeños escritos en mayúsculas. */
   letter-spacing: 0.1em;
   color: rgba(255, 255, 255, 0.5);
   margin-bottom: 1.2rem;
 }
 
 .footer-links ul {
-  list-style: none;
+  list-style: none; /* Limpia las viñetas por defecto del navegador */
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -49,6 +74,7 @@ footer {
   transition: var(--transicion);
 }
 
+/* Feedback visual al pasar el ratón (aumenta el brillo / opacidad) */
 .footer-links a:hover {
   color: var(--color-blanco);
 }
@@ -59,6 +85,7 @@ footer {
   margin-bottom: 0.4rem;
 }
 
+/* ===== SUB-FOOTER (COPYRIGHT) ===== */
 .footer-bottom {
   max-width: 1200px;
   margin: 0 auto;
@@ -67,18 +94,28 @@ footer {
 }
 
 .footer-bottom p {
+  /* Opacidad muy baja (0.3) para restar jerarquía visual al texto legal,
+     manteniendo la atención del usuario en los enlaces principales del grid superior. */
   color: rgba(255, 255, 255, 0.3);
   font-size: 0.8rem;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ==========================================================================
+   DISEÑO RESPONSIVO (MEDIA QUERIES)
+   Estrategia: Desktop-first (adaptando la estructura para tablets y móviles)
+   ========================================================================== */
 @media (max-width: 768px) {
   footer {
+    /* Se reducen los espacios interiores y exteriores para maximizar el 
+       espacio útil en pantallas pequeñas. */
     padding: 3rem 1rem 2rem;
     margin-top: 4rem;
   }
 
   .footer-content {
+    /* Al pasar el contenedor grid a una sola fracción (1fr), se anula 
+       la disposición en columnas y los 3 bloques principales (Marca, Enlaces, Contacto) 
+       se apilan verticalmente uno debajo del otro. */
     grid-template-columns: 1fr;
     gap: 2rem;
   }

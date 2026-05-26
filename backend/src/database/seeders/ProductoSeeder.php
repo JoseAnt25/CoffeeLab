@@ -5,33 +5,58 @@ namespace Database\Seeders;
 use App\Models\Producto;
 use Illuminate\Database\Seeder;
 
+/**
+ * Seeder de productos del catálogo.
+ *
+ * Crea el catálogo inicial de productos de CoffeLab con sus variantes.
+ * Los productos se dividen en tres categorías:
+ *
+ * Café en grano (categoria_id: 1):
+ * - Etiopía Yirgacheffe, Colombia Huila, Guatemala Antigua,
+ *   Brasil Cerrado, Kenia AA, Costa Rica Tarrazú
+ * - Todos con variantes de 250g, 500g y 1kg
+ *
+ * Cafeteras (categoria_id: 2):
+ * - Bialetti Moka Express (variantes por número de tazas)
+ * - French Press (sin variantes)
+ *
+ * Accesorios (categoria_id: 3):
+ * - Molinillo manual y báscula de precisión (sin variantes)
+ */
 class ProductoSeeder extends Seeder
 {
+    /**
+     * Crea los productos iniciales con sus variantes.
+     *
+     * Las variantes se extraen del array antes de crear el producto
+     * y se crean posteriormente usando la relación Eloquent.
+     */
     public function run(): void
     {
         $productos = [
+            // ===== CAFÉ EN GRANO =====
             [
-                'categoria_id' => 1, // Café en grano
+                'categoria_id' => 1,
                 'nombre'       => 'Café Etiopía Yirgacheffe',
                 'descripcion'  => 'Café de especialidad con notas a frutos rojos, jazmín y cítricos. Tostado medio.',
                 'precio'       => 14.90,
                 'stock'        => 100,
                 'activo'       => true,
                 'variantes'    => [
-                    ['nombre' => '250g', 'modificador_precio' => 0,    'stock' => 40],
+                    ['nombre' => '250g', 'modificador_precio' => 0,     'stock' => 40],
                     ['nombre' => '500g', 'modificador_precio' => 8.50,  'stock' => 40],
                     ['nombre' => '1kg',  'modificador_precio' => 19.00, 'stock' => 20],
                 ],
             ],
             [
-                'categoria_id' => 1, // Café en grano
+                'categoria_id' => 1,
                 'nombre'       => 'Café Colombia Huila',
                 'descripcion'  => 'Café suave con notas a caramelo, nuez y chocolate. Tostado medio-oscuro.',
                 'precio'       => 12.90,
                 'stock'        => 80,
                 'activo'       => true,
                 'variantes'    => [
-                    ['nombre' => '250g', 'modificador_precio' => 0,    'stock' => 30],
+                    ['nombre' => '250g', 'modificador_precio' => 0,     'stock' => 30],
                     ['nombre' => '500g', 'modificador_precio' => 7.50,  'stock' => 30],
                     ['nombre' => '1kg',  'modificador_precio' => 17.00, 'stock' => 20],
                 ],
@@ -88,21 +113,22 @@ class ProductoSeeder extends Seeder
                     ['nombre' => '1kg',  'modificador_precio' => 18.00, 'stock' => 15],
                 ],
             ],
+            // ===== CAFETERAS =====
             [
-                'categoria_id' => 2, // Cafeteras
+                'categoria_id' => 2,
                 'nombre'       => 'Cafetera Italiana Bialetti Moka Express',
                 'descripcion'  => 'La cafetera italiana clásica. Fabricada en aluminio de alta calidad.',
                 'precio'       => 180,
                 'stock'        => 50,
                 'activo'       => true,
                 'variantes'    => [
-                    ['nombre' => '3 tazas', 'modificador_precio' => 0,    'stock' => 20],
+                    ['nombre' => '3 tazas', 'modificador_precio' => 0,     'stock' => 20],
                     ['nombre' => '6 tazas', 'modificador_precio' => 8.00,  'stock' => 20],
                     ['nombre' => '9 tazas', 'modificador_precio' => 15.00, 'stock' => 10],
                 ],
             ],
             [
-                'categoria_id' => 2, // Cafeteras
+                'categoria_id' => 2,
                 'nombre'       => 'Cafetera de Émbolo French Press',
                 'descripcion'  => 'Cafetera de émbolo para un café rico y aromático. Capacidad 1L.',
                 'precio'       => 140,
@@ -110,8 +136,9 @@ class ProductoSeeder extends Seeder
                 'activo'       => true,
                 'variantes'    => [],
             ],
+            // ===== ACCESORIOS =====
             [
-                'categoria_id' => 3, // Accesorios
+                'categoria_id' => 3,
                 'nombre'       => 'Molinillo de café manual',
                 'descripcion'  => 'Molinillo cerámico con ajuste de grosor. Compacto y portátil.',
                 'precio'       => 34.90,
@@ -120,7 +147,7 @@ class ProductoSeeder extends Seeder
                 'variantes'    => [],
             ],
             [
-                'categoria_id' => 3, // Accesorios
+                'categoria_id' => 3,
                 'nombre'       => 'Báscula de precisión para café',
                 'descripcion'  => 'Báscula digital con temporizador integrado. Precisión de 0.1g.',
                 'precio'       => 19.90,
@@ -131,11 +158,13 @@ class ProductoSeeder extends Seeder
         ];
 
         foreach ($productos as $data) {
+            // Extraer variantes antes de crear el producto
             $variantes = $data['variantes'];
             unset($data['variantes']);
 
             $producto = Producto::create($data);
 
+            // Crear variantes asociadas si las hay
             if (!empty($variantes)) {
                 $producto->variantes()->createMany($variantes);
             }

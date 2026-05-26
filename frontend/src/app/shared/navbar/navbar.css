@@ -1,3 +1,9 @@
+/* ==========================================================================
+   COMPONENTE: BARRA DE NAVEGACIÓN (NAVBAR)
+   Propósito: Define la estructura superior del sitio con el logo, enlaces
+   principales, acciones de usuario y el acceso al carrito con contador.
+   ========================================================================== */
+
 nav.navbar {
   display: flex;
   align-items: center;
@@ -5,11 +11,17 @@ nav.navbar {
   padding: 1.2rem 2rem;
   background: var(--color-blanco);
   border-bottom: 1px solid var(--color-beige);
+  
+  /* Posicionamiento 'sticky' hace que el navbar permanezca visible al 
+     hacer scroll. top: 0 indica que se anclará al borde superior. */
   position: sticky;
   top: 0;
+  /* z-index alto para garantizar que el menú esté siempre sobre 
+     cualquier elemento de contenido que pase por debajo. */
   z-index: 100;
 }
 
+/* ===== LOGOTIPO Y MARCA ===== */
 .navbar-brand {
   font-family: var(--fuente-titulo);
   font-size: 1.5rem;
@@ -24,6 +36,7 @@ nav.navbar {
   display: block;
 }
 
+/* ===== ENLACES PRINCIPALES ===== */
 .navbar-links {
   display: flex;
   gap: 2.5rem;
@@ -44,6 +57,7 @@ nav.navbar {
   color: var(--color-negro);
 }
 
+/* ===== ACCIONES (USUARIO / CARRITO) ===== */
 .navbar-actions {
   display: flex;
   align-items: center;
@@ -69,6 +83,7 @@ nav.navbar {
   color: var(--color-negro);
 }
 
+/* ===== NOTIFICADOR DEL CARRITO (BADGE) ===== */
 .carrito-icon {
   position: relative;
   font-size: 1.2rem;
@@ -90,10 +105,14 @@ nav.navbar {
   justify-content: center;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ==========================================================================
+   DISEÑO RESPONSIVO (MOBILE)
+   ========================================================================== */
 @media (max-width: 768px) {
   nav.navbar {
     padding: 1rem;
+    /* 'flex-wrap: wrap' permite que los elementos salten a una nueva fila 
+       si no hay espacio suficiente, evitando el desbordamiento horizontal. */
     flex-wrap: wrap;
     gap: 0.8rem;
   }
@@ -103,6 +122,8 @@ nav.navbar {
   }
 
   .navbar-links {
+    /* 'order: 3' reubica los enlaces al final de la jerarquía visual en móvil, 
+       permitiendo que el logo y el carrito/acciones tengan prioridad de espacio. */
     order: 3;
     width: 100%;
     gap: 1.5rem;

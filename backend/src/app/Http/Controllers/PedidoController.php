@@ -9,8 +9,31 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Controlador de pedidos.
+ *
+ * Gestiona el ciclo de vida completo de los pedidos:
+ * creación con validación de stock, consulta filtrada por rol,
+ * actualización de estado con validación de transiciones y eliminación.
+ *
+ * Los admins ven todos los pedidos paginados.
+ * Los clientes solo ven sus propios pedidos.
+ *
+ * La creación de pedidos se realiza dentro de una transacción de base
+ * de datos para garantizar la consistencia del stock y el total.
+ */
 class PedidoController extends Controller
 {
+    /**
+     * Lista los pedidos según el rol del usuario autenticado.
+     *
+     * Los administradores reciben todos los pedidos con datos del usuario.
+     * Los clientes solo reciben sus propios pedidos.
+     * Ambos casos devuelven 10 pedidos por página.
+     *
+     * @param  Request  $request  Petición autenticada, puede incluir ?page=N
+     * @return JsonResponse       Respuesta paginada con pedidos e items
+     */
     public function index(Request $request): JsonResponse
     {
         $usuario = $request->user();
@@ -27,15 +50,30 @@ class PedidoController extends Controller
         return response()->json($pedidos);
     }
 
+    /**
+     * Crea un nuevo pedido con validación de stock en tiempo real.
+     *
+     * Ejecuta todo el proceso dentro de una transacción de base de datos:
+     * - Verifica que cada producto esté activo
+     * - Comprueba stock suficiente (por variante o por producto)
+     * - Descuenta el stock de los productos/variantes
+     * - Calcula el total sumando precio base + modificador de variante
+     * - Crea el pedido y sus items
+     *
+     * Si cualquier paso falla, la transacción se revierte completamente.
+     *
+     * @param  Request  $request  Datos: usuario_id, direccion_envio, items[]
+     * @return JsonResponse       Pedido creado con items (HTTP 201), o error 422
+     */
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'usuario_id'                => 'required|exists:usuarios,id',
-            'direccion_envio'           => 'required|string|max:255',
-            'items'                     => 'required|array|min:1',
-            'items.*.producto_id'       => 'required|exists:productos,id',
-            'items.*.variante_id'       => 'nullable|exists:variantes_producto,id',
-            'items.*.cantidad'          => 'required|integer|min:1',
+            'usuario_id'          => 'required|exists:usuarios,id',
+            'direccion_envio'     => 'required|string|max:255',
+            'items'               => 'required|array|min:1',
+            'items.*.producto_id' => 'required|exists:productos,id',
+            'items.*.variante_id' => 'nullable|exists:variantes_producto,id',
+            'items.*.cantidad'    => 'required|integer|min:1',
         ]);
 
         try {
@@ -46,13 +84,14 @@ class PedidoController extends Controller
                 foreach ($validated['items'] as $item) {
                     $producto = Producto::findOrFail($item['producto_id']);
 
+                    // Verificar que el producto está disponible
                     if (!$producto->activo) {
                         throw new \Exception("El producto '{$producto->nombre}' no está disponible.");
                     }
 
                     $precioUnitario = $producto->precio;
 
-                    // Gestión de variante
+                    // Gestión de stock por variante o por producto
                     if (!empty($item['variante_id'])) {
                         $variante = VarianteProducto::findOrFail($item['variante_id']);
                         $precioUnitario += $variante->modificador_precio;
@@ -73,9 +112,9 @@ class PedidoController extends Controller
                     $total += $precioUnitario * $item['cantidad'];
 
                     $itemsParaCrear[] = [
-                        'producto_id'    => $item['producto_id'],
-                        'variante_id'    => $item['variante_id'] ?? null,
-                        'cantidad'       => $item['cantidad'],
+                        'producto_id'     => $item['producto_id'],
+                        'variante_id'     => $item['variante_id'] ?? null,
+                        'cantidad'        => $item['cantidad'],
                         'precio_unitario' => $precioUnitario,
                     ];
                 }
@@ -99,6 +138,12 @@ class PedidoController extends Controller
         }
     }
 
+    /**
+     * Muestra un pedido con sus items y datos del usuario.
+     *
+     * @param  string  $id       ID del pedido
+     * @return JsonResponse      Pedido completo, o 404 si no existe
+     */
     public function show(string $id): JsonResponse
     {
         $pedido = Pedido::with(['items.producto', 'items.variante', 'usuario'])
@@ -107,6 +152,19 @@ class PedidoController extends Controller
         return response()->json($pedido);
     }
 
+    /**
+     * Actualiza el estado de un pedido.
+     *
+     * Valida que la transición de estado sea válida según el flujo:
+     * pendiente → pagado → enviado → entregado
+     * pendiente/pagado → cancelado
+     *
+     * No se permiten retrocesos ni transiciones no definidas.
+     *
+     * @param  Request  $request  Datos: estado (nuevo estado)
+     * @param  string   $id       ID del pedido
+     * @return JsonResponse       Pedido actualizado, 422 si la transición no es válida, o 404
+     */
     public function update(Request $request, string $id): JsonResponse
     {
         $pedido = Pedido::findOrFail($id);
@@ -115,12 +173,13 @@ class PedidoController extends Controller
             'estado' => 'required|in:pendiente,pagado,enviado,entregado,cancelado',
         ]);
 
+        // Mapa de transiciones válidas por estado actual
         $transicionesValidas = [
-            'pendiente'  => ['pagado', 'cancelado'],
-            'pagado'     => ['enviado', 'cancelado'],
-            'enviado'    => ['entregado'],
-            'entregado'  => [],
-            'cancelado'  => [],
+            'pendiente' => ['pagado', 'cancelado'],
+            'pagado'    => ['enviado', 'cancelado'],
+            'enviado'   => ['entregado'],
+            'entregado' => [],
+            'cancelado' => [],
         ];
 
         if (!in_array($validated['estado'], $transicionesValidas[$pedido->estado])) {
@@ -134,6 +193,15 @@ class PedidoController extends Controller
         return response()->json($pedido);
     }
 
+    /**
+     * Elimina un pedido y sus items.
+     *
+     * Solo se permite eliminar pedidos en estado 'pendiente' o 'cancelado'.
+     * Los pedidos en proceso (pagado, enviado, entregado) no pueden eliminarse.
+     *
+     * @param  string  $id       ID del pedido
+     * @return JsonResponse      Mensaje de confirmación, 409 si no se puede eliminar, o 404
+     */
     public function destroy(string $id): JsonResponse
     {
         $pedido = Pedido::findOrFail($id);

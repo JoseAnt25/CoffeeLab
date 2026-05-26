@@ -1,16 +1,29 @@
+/* ==========================================================================
+   COMPONENTE: LAYOUT DE ADMINISTRACIÓN (DASHBOARD)
+   Propósito: Proporciona una estructura de dos columnas (Sidebar + Main)
+   optimizada para la gestión interna del sitio.
+   ========================================================================== */
+
+/* Estructura base: El Grid permite separar claramente el sidebar (fijo 260px)
+  del área de contenido (flexible, 1fr). 
+  
+*/
 .admin-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
   min-height: 100vh;
 }
 
-/* ===== SIDEBAR ===== */
+/* ===== SIDEBAR (Navegación lateral) ===== */
 .admin-sidebar {
   background: var(--color-negro);
   color: var(--color-blanco);
   padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
+  
+  /* El sidebar se mantiene fijo en el viewport (sticky) mientras el Main hace scroll.
+     Esto asegura que los enlaces de navegación siempre estén al alcance del usuario. */
   position: sticky;
   top: 0;
   height: 100vh;
@@ -40,6 +53,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  /* flex: 1 permite que este contenedor ocupe el espacio disponible entre el brand y el footer */
   flex: 1;
 }
 
@@ -52,6 +66,7 @@
   transition: var(--transicion);
 }
 
+/* Feedback visual para el enlace activo o al hacer hover */
 .admin-nav a:hover,
 .admin-nav a.active {
   background: rgba(255,255,255,0.1);
@@ -70,26 +85,35 @@
   color: var(--color-blanco);
 }
 
-/* ===== MAIN ===== */
+/* ===== MAIN (Área de contenido) ===== */
 .admin-main {
   background: var(--color-gris-claro);
   padding: 2.5rem;
+  /* overflow-y: auto permite que el contenido interno tenga su propio scroll 
+     manteniendo el sidebar fijo (layout de doble scroll). */
   overflow-y: auto;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ==========================================================================
+   DISEÑO RESPONSIVO (MOBILE)
+   ========================================================================== */
 @media (max-width: 768px) {
   .admin-layout {
+    /* En móviles, eliminamos la estructura de columnas para apilar los elementos. */
     grid-template-columns: 1fr;
   }
 
   .admin-sidebar {
+    /* Cambiamos el comportamiento a flujo normal (static) para que el sidebar
+       no ocupe espacio innecesario de pantalla y se mueva junto con el contenido. */
     position: static;
     height: auto;
     padding: 1.5rem 1rem;
   }
 
   .admin-nav {
+    /* Convertimos la navegación vertical en una barra horizontal de botones (o chips) 
+       para aprovechar mejor el ancho de pantalla limitado. */
     flex-direction: row;
     flex-wrap: wrap;
     gap: 0.5rem;
